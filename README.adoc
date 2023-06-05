@@ -1,23 +1,29 @@
-= Introducción a la Programación: Trabajo Práctico 1
-Cristina Fernández_de_Kirchner <cfk@gmail.com>; Nestor Kirchner <nestor@gmail.com>
-v1, {docdate}. Docentes Eva Perón y Juan Perón (COM-08)
+= Bases de Datos 1: Trabajo Práctico
+== Primer Semestre 2023
+
+===Integrantes
+
+Buffagna Maria_Carla <mcarlabuff@gmail.com>; Curcio Matias <juanmatiascurcio@gmail.com>; Mendez Agustina <agustina.996@hotmail.com>
+v1, {docdate}. 
+
+===Docentes 
+
+Hernan Rondelli y Daniel Bertaccini
+
 :title-page:
 :numbered:
 :source-highlighter: coderay
 :tabsize: 4
 
-El texto debe ser breve, conciso, simple, y directo. Se debe incluir
-sólo lo relevante que ayude a entender el trabajo práctico.
-
-Se recomiendan oraciones y párrafos cortos.
-
-Por último, no olvidar utilizar signos de puntuación y checkear la
-ortografía.
 
 == Introducción
 
-Descripción del trabajo práctico. Aquí se puede copiar textual el [ó
-parte del] enunciado del trabajo práctico de considerarse necesario.
+El siguiente trabajo consiste en un sistema para almacenar informaciòn relativa a la administraciòn de turnos mèdicos.
+
+El sistema permitirà asignar turnos, mantener toda la informaciòn de los pacientes, controlar que los turnos se asignen correctamente y administrar las liquidaciones
+mensuales de las atenciones realizadas por cada medique.
+
+// Para esto se creò una base de datos utilizando postgres y go //
 
 == Descripción
 

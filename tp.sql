@@ -122,6 +122,14 @@ f_envio timestamp,
 estado char(10) --`pendiente', `enviado'
 );
 
+create table solicitud_reservas(
+nro_orden int,
+nro_paciente int,
+dni_medique int,
+fecha date,
+hora time
+);
+
 alter table paciente constraint paciente_pk primary key (nro_paciente);
 alter table medique constraint medique_pk primary key (dni_medique);
 alter table consultorio constraint consultorio_pk primary key (nro_consultorio);
@@ -135,6 +143,29 @@ alter table liquidacion_cabecera constraint liquidacion_cabecera_pk primary key 
 alter table liquidacion_detalle constraint liquidacion_detalle primary key (nro_liquidacion, nro_linea);
 alter table envio_email constraint envio_email_pk primary key (nro_email);
 
+alter table agenda add constraint dni_medique_fk foreign key (dni_medique) references medique (dni_medique);
+alter table agenda add constraint nro_consultorio_fk foreign key (nro_consultorio) references consultorio (nro_consultorio);
 
+alter table turno add constraint nro_consultorio_fk foreign key (nro_consultorio) references consultorio (nro_consultorio);
+alter table turno add constraint dni_medique_fk foreign key (dni_medique) references medique (dni_medique);
+alter table turno add constraint dni_paciente_fk foreign key (dni_paciente) references paciente (dni_paciente);
+alter table turno add constraint nro_obra_social_consulta_fk foreign key (nro_obra_social_consulta) references obra_social (nro_obra_social); --duda si es necesario
+alter table turno add constraint nro_afiliade_consulta_fk foreign key (nro_afiliade_consulta) references paciente (nro_afiliade); --duda si es necesario (quizas solo con el nùmero de paciente alcanza. O conviene quitar nro de paciente y quedarnos con nro afiliado)
 
+alter table reprogramacion add constraint nro_turno_fk foreign key (nro_turno) references turno (nro_turno);
 
+alter table error add constraint nro_consultorio_fk foreign key (nro_consultorio) references consultorio (nro_consultorio);
+alter table error add constraint dni_medique_fk foreign key (dni_medique) references medique (dni_medique);
+alter table error add constraint dni_paciente_fk foreign key (dni_paciente) references paciente (dni_paciente);
+
+alter table cobertura add constraint dni_medique_fk  foreign key (dni_medique) references medique (dni_medique);
+alter table cobertura add constraint nro_obra_social_fk  foreign key (nro_obra_social) references obra_social (nro_obra_social);
+
+alter table liquidacion_cabecera add constraint nro_obra_social_fk  foreign key (nro_obra_social) references obra_social (nro_obra_social);
+
+alter table liquidacion_detalle add constraint nro_liquidacion_fk  foreign key (nro_liquidacion) references liquidacion_cabecera (nro_liquidacion);
+alter table liquidacion_detalle add constraint f_atencion_fk  foreign key (f_atencion) references liquidacion_cabecera (nro_liquidacion);
+alter table liquidacion_detalle add constraint dni_paciente_fk  foreign key (dni_paciente) references paciente (dni_paciente);
+alter table liquidacion_detalle add constraint dni_medique_fk  foreign key (dni_medique) references medique (dni_medique);
+
+alter table envio_email add constraint email_paciente_fk  foreign key (email_paciente) references paciente (email);

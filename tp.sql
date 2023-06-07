@@ -192,3 +192,24 @@ insert into paciente values ( 17, 'Ben', 'Stiller', 19745852, '1960-05-11', 200,
 insert into paciente values ( 18, 'Angelina', 'Jolie', 27673951, '1975-06-04', 300, 3003, 'Corrientes 1256, San Miguel', '1174859613', 'angjolie@gmail.com');
 insert into paciente values ( 19, 'John', 'Travolta', 14723441, '1954-02-18', 300, 3004, 'Santa Fe 2523, CABA', '1144526344', 'johntravolta@gmail.com');
 insert into paciente values ( 20, 'Brad', 'Pitt', 21739852, '1963-12-18', 200, 2006, 'Pte. Peron 433, San Miguel', '1122536892', 'bradp@yahoo.com');
+
+insert into medique values(31759846, 'Juan','Perez','clínico', 514.5, 1174859623);
+insert into medique values(28455749, 'Pedro','Corvalan','clínico', 423.95, 1152869341);
+insert into medique values(30668951, 'Alfredo','Mendez','cardiología', 1023.5, 1147852639);
+insert into medique values(19512639, 'Claudia','Pacheco','clínico', 723.31, 1142758693);
+insert into medique values(25748596, 'Esteban','Roig','clínico', 416.96, 1152647382);
+insert into medique values(30205816, 'Beatriz','Mendieta','clínico', 1569.33, 1194758623);
+insert into medique values(33850951, 'Juan Carlos','Caputo','clínico', 963.70, 1134526282);
+insert into medique values(20147852, 'Alberto','Semit','ginecología', 4347, 1144552368);
+insert into medique values(18945123, 'Javier','Greco','clínico', 698.83, 1155237896);
+insert into medique values(27401511, 'Ana Maria','Lopez','clínico', 752.13, 11012586);
+insert into medique values(29564812, 'Augusto','Gutierrez','clínico', 968.8, 11602539);
+insert into medique values(30514789, 'Franco','Campanella','clínico', 421, 11547082);
+insert into medique values(18308511, 'Lucia','Ricardini','osteopatía', 372.7, 1122526230);
+insert into medique values(22174850, 'Juan Jose','Di Marco','clínico', 469.75, 1171815020);
+insert into medique values(25013965, 'Walter','Gomez','clínico', 961.23, 1195648023);
+insert into medique values(21980541, 'Carlos','Scasso','clínico', 847.4, 1175958072);
+insert into medique values(26845623, 'Melisa','Lissi','clínico', 375, 1140536292);
+insert into medique values(21036258, 'Juan Martin','Delgado','clínico', 400, 1177839254);
+insert into medique values(31540210, 'Luciana','Bentancur','clínico', 500, 1137759062);
+insert into medique values(29541019, 'Romina','Ricci','clínico', 600, 1141489806);

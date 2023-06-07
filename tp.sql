@@ -212,4 +212,18 @@ insert into medique values(21980541, 'Carlos','Scasso','clínico', 847.4, 117595
 insert into medique values(26845623, 'Melisa','Lissi','clínico', 375, 1140536292);
 insert into medique values(21036258, 'Juan Martin','Delgado','clínico', 400, 1177839254);
 insert into medique values(31540210, 'Luciana','Bentancur','clínico', 500, 1137759062);
-insert into medique values(29541019, 'Romina','Ricci','clínico', 600, 1141489806);
+insert into medique values(29541019, 'Romina','Ricci','clínico', 600, 114148980);
+
+
+insert into consultorio values (01, 'Consultorio Fatima', 'Franklin 369', 'B1603AKX', '023204578961');
+insert into consultorio values (02, 'Médicos del Pilar', 'Las Camelias 5648', 'B1669AMX', '1165784800');
+insert into consultorio values (03, 'Consultorio Lilo', 'San Andres 1363', 'B1744RSX', '02374408902');
+insert into consultorio values (04, 'Consultorios Sarmiento', 'Condarco 1321', 'B1633AKX', '1167151898');
+insert into consultorio values (05, 'Su medicina', 'Mitre 589', 'B1664GDH', '02408975000');
+insert into consultorio values (06, 'Clinicos', 'Belgrano 23', 'B1664GDH', '1148569701');
+insert into consultorio values (07, 'Medicos.com', 'San Nicolás 5894', 'B1689LKH', '1100205264');
+insert into consultorio values (08, 'SuSalud', 'Juramento 877', 'C1428DMF', '01145131620');
+insert into consultorio values (09, 'Consultorios privados', 'Drago 1301','B1534XRA', '02320457025');
+insert into consultorio values (10, 'Consultorios privados', 'Drago 1301', 'B1534XRA', '02320457025');
+
+

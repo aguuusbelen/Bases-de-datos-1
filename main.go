@@ -1,10 +1,11 @@
 package main
 
 import (
-    "database/sql"
+    _"database/sql"
     "fmt"
+	"time"
     _ "github.com/lib/pq"
-    "log"
+    _"log"
 )   
 
 func main() {

@@ -27,3 +27,5 @@ alter table obra_social drop constraint;
 alter table liquidacion_cabecera drop constraint liquidacion_cabecera_pk;
 alter table liquidacion_detalle drop constraint liquidacion_detalle_pk;
 alter table envio_email drop constraint envio_email_pk;
+
+

@@ -1,10 +1,9 @@
 = Bases de Datos 1: Trabajo Práctico
 == Primer Semestre 2023
-
+v1, {docdate}. 
 *Integrantes*
 
 Buffagna Maria_Carla <mcarlabuff@gmail.com>; Curcio Matias <juanmatiascurcio@gmail.com>; Mendez Agustina <agustina.996@hotmail.com>
-v1, {docdate}. 
 
 *Docentes*
 
@@ -28,19 +27,19 @@ mensuales de las atenciones realizadas por cada medique.
 == Descripción
 
 Para comenzar, se agregaron las tablas:
-- Paciente
-- Medique
--Consultorio
--Obra social
-Estas tcuatro tablas guardaran informaciòn basica.
--Agenda: Relacionada a cada medique para obtener la informaciòn de los dìas y horarios en que atiende.
-- Turno: Guardara los datos de los turnos, relacionando la informaciòn de mediques, pacientes y consultorios.
-- Reprogramaciòn: 
-- Error:
-- Cobertura: Guardarà las obras sociales que atiende cada medique.
--Liquidaciòn cabecera:
--Liquidacion detalle:
--Envio email:
+  -Paciente
+  -Medique
+ -Consultorio
+ -Obra social
+Estas cuatro tablas guardaran informaciòn basica.
+ -Agenda: Relacionada a cada medique para obtener la informaciòn de los dìas y horarios en que atiende.
+ - Turno: Guardara los datos de los turnos, relacionando la informaciòn de mediques, pacientes y consultorios.
+ - Reprogramaciòn: 
+ - Error:
+ - Cobertura: Guardarà las obras sociales que atiende cada medique.
+ -Liquidaciòn cabecera:
+ -Liquidacion detalle:
+ -Envio email:
 
 
 En esta sección pueden incluirse las dificultades que tuvieron, las

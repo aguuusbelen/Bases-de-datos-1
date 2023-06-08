@@ -251,3 +251,27 @@ insert into agenda values (21036258, 5, 01, 12:00, 18:00, INTERVAL '15' MINUTE);
 insert into agenda values (31540210, 5, 03, 09:30, 14:00, INTERVAL '15' MINUTE);
 insert into agenda values (29541019, 5, 06, 10:00, 17:00, INTERVAL '15' MINUTE);
 
+
+insert into cobertura values (31759846, 100, 0, 514.5);
+insert into cobertura values (31759846, 300, 200, 314.5);
+insert into cobertura values (28455749, 100, 0, 423.95);
+insert into cobertura values (30668951, 100, 0, 1023.5);
+insert into cobertura values (30668951, 400, 400, 623.5);
+insert into cobertura values (19512639, 100, 0,723.31);
+insert into cobertura values (25748596, 100, 216,200.96);
+insert into cobertura values (30205816, 100,1000, 569.33);
+insert into cobertura values (33850951, 100,0, 963.70);
+insert into cobertura values (20147852, 200, 1000, 3347);
+insert into cobertura values (18945123, 200, 0, 698.83);
+insert into cobertura values (27401511, 200, 500, 252.13);
+insert into cobertura values (29564812, 200, 600, 368.8);
+insert into cobertura values (30514789, 200, 0, 421);
+insert into cobertura values (18308511, 300, 0, 372.7);
+insert into cobertura values (22174850, 300, 100, 369.75);
+insert into cobertura values (25013965, 300, 561.23, 400);
+insert into cobertura values (21980541, 300, 0, 847.4);
+insert into cobertura values (26845623, 400, 0, 375);
+insert into cobertura values (21036258, 400, 200, 200);
+insert into cobertura values (31540210, 400, 0, 500);
+insert into cobertura values (29541019, 400, 200, 300);
+

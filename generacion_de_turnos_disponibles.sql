@@ -9,7 +9,7 @@ declare
 	fecha_aux_final timestamp := fecha_aux_inicio + interval '1 month' - interval '1 day';
 	fecha_aux_actual timestamp;
 	
-	--cant_de_turnos_cargados int;
+	cant_de_turnos_cargados int;
 	
 begin	
 	-- Si hay turnos creados para ese año y mes, devuelve false.
@@ -19,14 +19,12 @@ begin
 	) then return false;
 	end if;
 	
-	--cant_de_turnos_cargados := (select count (*) from turno);
-	--if cant_de_turnos_cargados != 0 then
-		--nro_turno := cant_de_turnos_cargados + 1;
-		--else
-			--nro_turno:=1;
-	--end if;
-	
-	nro_turno:= 1;
+	cant_de_turnos_cargados := (select count (*) from turno);
+	if cant_de_turnos_cargados != 0 then
+		nro_turno := cant_de_turnos_cargados + 1;
+	else
+		nro_turno:=1;
+	end if;
 	
 	for a in select * from agenda loop -- para recorrer la tabla agenda
 		

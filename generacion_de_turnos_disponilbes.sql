@@ -8,6 +8,9 @@ declare
 	fecha_aux_inicio timestamp := date_trunc('month', make_date(anio,mes,1));
 	fecha_aux_final timestamp := fecha_aux_inicio + interval '1 month' - interval '1 day';
 	fecha_aux_actual timestamp;
+	
+	--cant_de_turnos_cargados int;
+	
 begin	
 	-- Si hay turnos creados para ese año y mes, devuelve false.
 	if exists (
@@ -15,7 +18,16 @@ begin
 		((select extract (year from turno.fecha))= anio and (select extract (month from turno.fecha)) = mes) -- Comparo el año y el mes con la fecha del turno
 	) then return false;
 	end if;
-	nro_turno:=1;
+	
+	--cant_de_turnos_cargados := (select count (*) from turno);
+	--if cant_de_turnos_cargados != 0 then
+		--nro_turno := cant_de_turnos_cargados + 1;
+		--else
+			--nro_turno:=1;
+	--end if;
+	
+	nro_turno:= 1;
+	
 	for a in select * from agenda loop -- para recorrer la tabla agenda
 		
 		fecha_aux_actual:= fecha_aux_inicio;

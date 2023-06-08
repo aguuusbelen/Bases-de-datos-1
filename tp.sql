@@ -227,29 +227,29 @@ insert into consultorio values (09, 'Consultorios privados', 'Drago 1301','B1534
 insert into consultorio values (10, 'Consultorios privados', 'Drago 1301', 'B1534XRA', '02320457025');
 
 
-insert into agenda values (31759846, 1, 01, 9:00, 14:00, INTERVAL '20' MINUTE); –clinico, 2 dias
-insert into agenda values (31759846, 4, 05, 12:00, 18:00, INTERVAL '20' MINUTE);
-insert into agenda values (28455749, 1, 02, 8:00, 12:00, INTERVAL '15' MINUTE);
-insert into agenda values (30668951, 1, 03, 9:00, 16:00, INTERVAL '15' MINUTE); –cardiologo, 2 dias
-insert into agenda values (30668951, 3, 03, 9:00, 16:00, INTERVAL '15' MINUTE);
-insert into agenda values (19512639, 1, 07, 12:00, 19:00, INTERVAL '20' MINUTE);
-insert into agenda values (25748596, 2, 01, 08:30, 14:30, INTERVAL '15' MINUTE);
-insert into agenda values (30205816, 2, 04, 10:00, 16:00, INTERVAL '15' MINUTE);
-insert into agenda values (33850951, 2, 06, 13:00, 18:00, INTERVAL '15' MINUTE);
-insert into agenda values (20147852, 2, 07, 09:00, 13:00, INTERVAL '20' MINUTE); –ginecologia, 2 dias
-insert into agenda values (20147852, 4, 02, 09:00, 13:00, INTERVAL '20' MINUTE); 
-insert into agenda values (18945123, 2, 09, 08:30, 16:30, INTERVAL '30' MINUTE); –osteopatia
-insert into agenda values (27401511, 2, 06, 08:00, 12:00, INTERVAL '20' MINUTE);
-insert into agenda values (29564812, 3, 01, 09:00, 15:00, INTERVAL '15' MINUTE);
-insert into agenda values (30514789, 3, 05, 08:30, 14:30, INTERVAL '15' MINUTE);
-insert into agenda values (18308511, 3, 08, 12:30, 18:00, INTERVAL '15' MINUTE);
-insert into agenda values (22174850, 4, 02, 13:30, 19:30, INTERVAL '15' MINUTE);
-insert into agenda values (25013965, 4, 04, 12:00, 18:00, INTERVAL '15' MINUTE);
-insert into agenda values (21980541, 4, 07, 08:00, 14:00, INTERVAL '15' MINUTE);
-insert into agenda values (26845623, 4, 09, 14:00, 18:00, INTERVAL '20' MINUTE);
-insert into agenda values (21036258, 5, 01, 12:00, 18:00, INTERVAL '15' MINUTE);
-insert into agenda values (31540210, 5, 03, 09:30, 14:00, INTERVAL '15' MINUTE);
-insert into agenda values (29541019, 5, 06, 10:00, 17:00, INTERVAL '15' MINUTE);
+insert into agenda values (31759846, 1, 01, '9:00', '14:00', INTERVAL '20' MINUTE); --clinico, 2 dias
+insert into agenda values (31759846, 4, 05, '12:00', '18:00', INTERVAL '20' MINUTE);
+insert into agenda values (28455749, 1, 02, '8:00', '12:00', INTERVAL '15' MINUTE);
+insert into agenda values (30668951, 1, 03, '9:00', '16:00', INTERVAL '15' MINUTE); --cardiologo, 2 dias
+insert into agenda values (30668951, 3, 03, '9:00', '16:00', INTERVAL '15' MINUTE);
+insert into agenda values (19512639, 1, 07, '12:00', '19:00', INTERVAL '20' MINUTE);
+insert into agenda values (25748596, 2, 01, '08:30', '14:30', INTERVAL '15' MINUTE);
+insert into agenda values (30205816, 2, 04, '10:00', '16:00', INTERVAL '15' MINUTE);
+insert into agenda values (33850951, 2, 06, '13:00', '18:00', INTERVAL '15' MINUTE);
+insert into agenda values (20147852, 2, 07, '09:00', '13:00', INTERVAL '20' MINUTE); --ginecologia, 2 dias
+insert into agenda values (20147852, 4, 02, '09:00', '13:00', INTERVAL '20' MINUTE); 
+insert into agenda values (18945123, 2, 09, '08:30', '16:30', INTERVAL '30' MINUTE); --osteopatia
+insert into agenda values (27401511, 2, 06, '08:00', '12:00', INTERVAL '20' MINUTE);
+insert into agenda values (29564812, 3, 01, '09:00', '15:00', INTERVAL '15' MINUTE);
+insert into agenda values (30514789, 3, 05, '08:30', '14:30', INTERVAL '15' MINUTE);
+insert into agenda values (18308511, 3, 08, '12:30', '18:00', INTERVAL '15' MINUTE);
+insert into agenda values (22174850, 4, 02, '13:30', '19:30', INTERVAL '15' MINUTE);
+insert into agenda values (25013965, 4, 04, '12:00', '18:00', INTERVAL '15' MINUTE);
+insert into agenda values (21980541, 4, 07, '08:00', '14:00', INTERVAL '15' MINUTE);
+insert into agenda values (26845623, 4, 09, '14:00', '18:00', INTERVAL '20' MINUTE);
+insert into agenda values (21036258, 5, 01, '12:00', '18:00', INTERVAL '15' MINUTE);
+insert into agenda values (31540210, 5, 03, '09:30', '14:00', INTERVAL '15' MINUTE);
+insert into agenda values (29541019, 5, 06, '10:00', '17:00', INTERVAL '15' MINUTE);
 
 
 insert into cobertura values (31759846, 100, 0, 514.5);

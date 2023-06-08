@@ -13,7 +13,15 @@ begin
 	if not found then
 		raise 'no se encontró medique' , dni_medique;
 	end if;
-	--falta verificar obra social
+	
+	select * from paciente, cobertura, medique where (paciente.nro_obra_social = cobertura.nro_obra_social 
+	and medique.dni_medique = cobertura.dni_medique);
+	
+	if not found then
+		raise 'el medique seleccionado no cubre la obra social del paciente';
+	end if;
+	
+	--select * from turno 
 	--falta verificar turnos pendientes de pacientes
 	select * from turno where fecha = turno.fecha and dni_medique = dni_medique and estado = "disponible";
 	

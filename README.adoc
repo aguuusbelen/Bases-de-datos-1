@@ -17,12 +17,12 @@ Hernan Rondelli y Daniel Bertaccini
 
 == Introducción
 
-El siguiente trabajo consiste en un sistema para almacenar informaciòn relativa a la administraciòn de turnos mèdicos.
+El siguiente trabajo consiste en un sistema para almacenar información relativa a la administración de turnos médicos.
 
-El sistema permitirà asignar turnos, mantener toda la informaciòn de los pacientes, controlar que los turnos se asignen correctamente y administrar las liquidaciones
+El sistema permitirá asignar turnos, mantener toda la información de los pacientes, controlar que los turnos se asignen correctamente y administrar las liquidaciones
 mensuales de las atenciones realizadas por cada medique.
 
-// Para esto se creò una base de datos utilizando postgres y go //
+// Para esto se creó una base de datos utilizando postgres y go //
 
 == Descripción
 

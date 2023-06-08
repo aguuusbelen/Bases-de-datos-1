@@ -5,13 +5,13 @@ begin
 	t := (select * from turno where nro_turno = turno.nro_turno);
 	
 		if not t then
-			raise 'número de turno no válido'; 
+			raise 'número de turno no válido', nro_turno; 
 		else 
 			if  not (t.estado = 'reservado') then
 				raise 'turno no reservado'; 
 			else
 				if not (t.fecha = localtimestamp) then
-					raise 'turno no corresponde a la fecha del dia';
+					raise 'turno no corresponde a la fecha del dia', t.fecha;
 					return false;
 				else
 					update turno set estado = 'atendido' where turno.nro_turno = nro_turno;
@@ -24,7 +24,7 @@ end;
 $$ language plpgsql;
 
 
---select * from turno where nro_turno = turno.nro_turno;
+--select * from turno into t where nro_turno = turno.nro_turno;
 --	
 --		if not found then
 --			raise 'número de turno no válido'; 

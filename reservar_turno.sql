@@ -6,7 +6,7 @@ declare
 	t turno%rowtype;
 	cantidad_de_turnos_reservados int;
 	
-	fecha_actual date := current_date;
+	fecha_actual timestamp := current_date + current_time ;
 	
 begin
 	select * from paciente into p where paciente_ID = paciente.nro_paciente;
@@ -28,7 +28,7 @@ begin
 		raise 'el medique seleccionado no cubre la obra social del paciente';
 	end if;
 	
-	cantidad_de_turnos_reservados := (select count (nro_paciente = paciente_ID) from turno group by (estado = 'reservado'));
+	cantidad_de_turnos_reservados := (select count(*) from turno where estado = 'reservado' group by nro_paciente having nro_paciente= paciente_ID) ;
 	if cantidad_de_turnos_reservados >=5 then
 		raise 'supera el limite de reserva de turnos';
 	end if;

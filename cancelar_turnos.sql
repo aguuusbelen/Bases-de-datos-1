@@ -1,47 +1,32 @@
-create or replace function Reservar_turno(paciente_ID int, medique_dni int, fecha_f timestamp) returns boolean as $$
+create or replace function Cancelar_turnos(medique_dni int, desde_fecha date, hasta_fecha date) returns int as $$
 declare
-	p paciente%rowtype;
-	me medique%rowtype;
-	os record;
-	t turno%rowtype;
-	cantidad_de_turnos_reservados int;
 	
-	fecha_actual timestamp := current_date + current_time ;
+	t turno%rowtype;
+	turnos_cancelados int=0;
 	
 begin
-	select * from paciente into p where paciente_ID = paciente.nro_paciente;
 	
-	if not found then
-		raise 'el número de paciente no se encuentra registrado';
-	end if;
+	for t in select * from turno, paciente, medique where turno.dni_medique = medique.dni_medique and turno.nro_paciente = paciente.nro_paciente and 
+											turno.dni_medique = medique_dni and (turno.estado='disponible' or turno.estado='reservado') loop
+		if (t.fecha::date >= desde_fecha and t.fecha::date <= hasta_fecha) then
+			
+			if (t.estado='reservado')then
+				insert into reprogramacion values (t.nro_turno, paciente.nombre, paciente.apellido,paciente.telefono, paciente.email, medique.nombre,medique.apellido, 'pendiente');
+				--aca se enviarìa mail
+			end if;
+			
+			update turno set estado='cancelado' where t.nro_turno = turno.nro_turno;
+			
+			turnos_cancelados = turnos_cancelados + 1;
+		end if;	
+		
+	end loop;
+				
+				
+	return turnos_cancelados;		
 	
-	select * from medique into me where medique_dni = medique.dni_medique;
-	
-	if not found then
-		raise 'no se encontró medique'; 
-	end if;
-	
-	select * from paciente, cobertura, medique into os where (paciente.nro_obra_social = cobertura.nro_obra_social 
-	and medique.dni_medique = cobertura.dni_medique);
-	
-	if not found then
-		raise 'el medique seleccionado no cubre la obra social del paciente';
-	end if;
-	
-	cantidad_de_turnos_reservados := (select count(*) from turno where estado = 'reservado' group by nro_paciente having nro_paciente= paciente_ID) ;
-	if cantidad_de_turnos_reservados >=5 then
-		raise 'supera el limite de reserva de turnos';
-	end if;
-
-	select * from turno into t where fecha_f = turno.fecha and medique_dni = turno.dni_medique and estado = 'disponible';
-	
-	if not found then
-		raise 'no hay disponibilidad de turnos para la fecha requerida';
-	end if;
-	
-	update turno set nro_paciente = paciente_ID, nro_obra_social_consulta = p.nro_obra_social,
-		nro_afiliade_consulta = p.nro_afiliade, monto_paciente = os.monto_paciente,
-		monto_obra_social = os.monto_obra_social, f_reserva = fecha_actual, estado = 'reservado' where (fecha_f = turno.fecha and medique_dni = turno.dni_medique and estado = 'disponible');
-	return true;
+	--recorre la tabla turno con el rango de fechas dado
+	--update de estado = 'cancelado'
+	-- insert en tabla reprogramacion
 end;
 $$ language plpgsql;

@@ -23,7 +23,7 @@ alter table turno drop constraint turno_pk;
 alter table reprogramacion drop constraint reprogramacion_pk;
 alter table error drop constraint error_pk;
 alter table cobertura drop constraint cobertura_pk;
-alter table obra_social drop constraint;
+alter table obra_social drop constraint obra_social_pk;
 alter table liquidacion_cabecera drop constraint liquidacion_cabecera_pk;
 alter table liquidacion_detalle drop constraint liquidacion_detalle_pk;
 alter table envio_email drop constraint envio_email_pk;

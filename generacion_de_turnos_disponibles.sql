@@ -19,13 +19,6 @@ begin
 	) then return false;
 	end if;
 	
-	cant_de_turnos_cargados := (select count (*) from turno);
-	if cant_de_turnos_cargados != 0 then
-		nro_turno := cant_de_turnos_cargados + 1;
-	else
-		nro_turno:=1;
-	end if;
-	
 	for a in select * from agenda loop -- para recorrer la tabla agenda
 		
 		fecha_aux_actual:= fecha_aux_inicio;
@@ -36,7 +29,8 @@ begin
 				aux_horario:= a.hora_desde;
 				while aux_horario <= a.hora_hasta - a.duracion_turno loop
 			
-						insert into turno values(nro_turno, fecha_aux_actual + aux_horario, a.nro_consultorio, a.dni_medique, null, null, null, null, null, null, 'disponible');
+						insert into turno (fecha, nro_consultorio, dni_medique,nro_paciente,nro_obra_social_consulta,nro_afiliade_consulta,monto_paciente,monto_obra_social,f_reserva,estado) 
+											values(fecha_aux_actual + aux_horario, a.nro_consultorio, a.dni_medique, null, null, null, null, null, null, 'disponible');
 						nro_turno:= nro_turno +1; 
 						aux_horario := aux_horario + a.duracion_turno;
 				

@@ -63,7 +63,7 @@ estado char(12) --`pendiente', `reprogramado', `desistido'
 );
 
 create table error(
-nro_error int,
+nro_error serial,
 f_turno timestamp,
 nro_consultorio int,
 dni_medique int,

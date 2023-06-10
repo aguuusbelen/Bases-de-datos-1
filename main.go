@@ -11,6 +11,7 @@ import (
 func main() {
     crearBase()
     cargarDatos()
+    generarTurnosDisponibles()
 }
 
 func crearBase() {
@@ -43,14 +44,14 @@ func cargarDatos() {
 	}
 	defer db.Close()
 
-	cargarTablas(db, "creacion_tablas.sql")
-	cargarTablas(db, "add_PKs_FKs.sql")
-	cargarTablas(db, "carga_valores.sql")
+	ejecutar_sql(db, "creacion_tablas.sql")
+	ejecutar_sql(db, "add_PKs_FKs.sql")
+	ejecutar_sql(db, "carga_valores.sql")
 	
 }
 
 
-func cargarTablas(db *sql.DB, path string){
+func ejecutar_sql(db *sql.DB, path string){
 	file, err := ioutil.ReadFile(path)
 	
 	if err !=nil {
@@ -64,3 +65,17 @@ func cargarTablas(db *sql.DB, path string){
 		log.Fatal(err)
 	}
 }
+
+func generarTurnosDisponibles() {
+	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=prueba2 sslmode=disable")
+	if err != nil {
+		fmt.Println("Error al abrir la base de datos creada")
+		log.Fatal(err)
+	}
+	defer db.Close()
+	
+	ejecutar_sql(db, "generacion_de_turnos_disponibles.sql")
+
+}
+
+

@@ -25,10 +25,10 @@ begin
 		return false;
 	end if;
 	
-	select * from paciente, cobertura, medique into os where (paciente.nro_obra_social = cobertura.nro_obra_social 
-									and medique.dni_medique = cobertura.dni_medique);
+	select * from paciente, cobertura, medique into os where (p.nro_obra_social = cobertura.nro_obra_social 
+									and medique_dni = cobertura.dni_medique);
 	
-	if not found then --si no encuentra significa que el medico no atiende esa obra social
+	if not found and p.nro_obra_social is not null then --si no encuentra significa que el medico no atiende esa obra social
 		insert into error (f_turno, nro_consultorio, dni_medique, nro_paciente, operacion, f_error, motivo) 
 								values (t.fecha, t.nro_consultorio, t.dni_medique, t.nro_paciente, 'reserva', fecha_actual, 'obra social de paciente no atendida por le médique');
 		return false;

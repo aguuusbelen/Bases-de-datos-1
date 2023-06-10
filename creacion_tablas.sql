@@ -113,7 +113,7 @@ monto decimal(12,2)
 );
 
 create table envio_email(
-nro_email int,
+nro_email serial,
 f_generacion timestamp,
 email_paciente text,
 asunto text,

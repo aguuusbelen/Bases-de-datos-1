@@ -90,7 +90,7 @@ contacto_email text
 );
 
 create table liquidacion_cabecera(
-nro_liquidacion int,
+nro_liquidacion serial,
 nro_obra_social int,
 desde date,
 hasta date,
@@ -98,8 +98,8 @@ total decimal(15,2)
 );
 
 create table liquidacion_detalle(
-nro_liquidacion int,
-nro_linea int,
+nro_liquidacion serial,
+nro_linea serial,
 f_atencion date,
 nro_afiliade int,
 dni_paciente int,

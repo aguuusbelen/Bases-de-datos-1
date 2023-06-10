@@ -35,11 +35,11 @@ begin
 			monto_liquidacion=monto_liquidacion + t_aux.monto_obra_social; 
 			
 		end if;	
-		
-		insert into liquidacion_cabecera (nro_obra_social, desde, hasta, total) values
-			(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion);
 	
 	end loop;
+	
+	insert into liquidacion_cabecera (nro_obra_social, desde, hasta, total) values
+			(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion);
 
 	return monto_liquidacion;
 	

@@ -36,14 +36,17 @@ func crearBase() {
 	
 }
 
-func cargarDatos() {
+func coneccionBase(){
 	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=prueba2 sslmode=disable")
-	if err != nil {
-		fmt.Println("Error al abrir la base de datos ya creada")
+	if err !=nil {
 		log.Fatal(err)
+		fmt.Println("Error al abrir la base de datos ya creada")
 	}
 	defer db.Close()
+}
 
+func cargarDatos() {
+	coneccionBase()
 	ejecutar_sql(db, "creacion_tablas.sql")
 	ejecutar_sql(db, "add_PKs_FKs.sql")
 	ejecutar_sql(db, "carga_valores.sql")
@@ -67,15 +70,9 @@ func ejecutar_sql(db *sql.DB, path string){
 }
 
 func generarTurnosDisponibles() {
-	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=prueba2 sslmode=disable")
-	if err != nil {
-		fmt.Println("Error al abrir la base de datos creada")
-		log.Fatal(err)
-	}
-	defer db.Close()
-	
+	coneccionBase()
 	ejecutar_sql(db, "generacion_de_turnos_disponibles.sql")
-
+	
 }
 
 

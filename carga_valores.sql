@@ -58,11 +58,11 @@ insert into consultorio values (09, 'Consultorios privados', 'Drago 1301','B1534
 insert into consultorio values (10, 'Consultorios privados', 'Drago 1301', 'B1534XRA', '02320457025');
 
 
-insert into agenda values (31759846, 1, 01, '9:00', '14:00', INTERVAL '20' MINUTE); --clinico, 2 dias
+insert into agenda values (31759846, 1, 01, '09:00', '14:00', INTERVAL '20' MINUTE); --clinico, 2 dias
 insert into agenda values (31759846, 4, 05, '12:00', '18:00', INTERVAL '20' MINUTE);
-insert into agenda values (28455749, 1, 02, '8:00', '12:00', INTERVAL '15' MINUTE);
-insert into agenda values (30668951, 1, 03, '9:00', '16:00', INTERVAL '15' MINUTE); --cardiologo, 2 dias
-insert into agenda values (30668951, 3, 03, '9:00', '16:00', INTERVAL '15' MINUTE);
+insert into agenda values (28455749, 1, 02, '08:00', '12:00', INTERVAL '15' MINUTE);
+insert into agenda values (30668951, 1, 03, '09:00', '16:00', INTERVAL '15' MINUTE); --cardiologo, 2 dias
+insert into agenda values (30668951, 3, 03, '09:00', '16:00', INTERVAL '15' MINUTE);
 insert into agenda values (19512639, 1, 07, '12:00', '19:00', INTERVAL '20' MINUTE);
 insert into agenda values (25748596, 2, 01, '08:30', '14:30', INTERVAL '15' MINUTE);
 insert into agenda values (30205816, 2, 04, '10:00', '16:00', INTERVAL '15' MINUTE);

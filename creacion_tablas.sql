@@ -98,7 +98,7 @@ total decimal(15,2)
 );
 
 create table liquidacion_detalle(
-nro_liquidacion serial,
+nro_liquidacion int,
 nro_linea serial,
 f_atencion date,
 nro_afiliade int,

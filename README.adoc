@@ -19,7 +19,7 @@ Hernan Rondelli y Daniel Bertaccini
 
 El siguiente trabajo consiste en un sistema para almacenar información relativa a la administración de turnos médicos.
 
-El sistema permitirá asignar turnos, mantener toda la información de los pacientes, controlar que los turnos se asignen correctamente y administrar las liquidaciones
+El sistema permitirá asignar turnos, mantener toda la información de los pacientes, mediques, cobertura de las obras sociales, controlar que los turnos se asignen correctamente y administrar las liquidaciones
 mensuales de las atenciones realizadas por cada medique.
 
 // Para esto se creó una base de datos utilizando postgres y go //
@@ -27,19 +27,19 @@ mensuales de las atenciones realizadas por cada medique.
 == Descripción
 
 Para comenzar, se agregaron las tablas:
-  -Paciente
-  -Medique
- -Consultorio
- -Obra social
+*Paciente
+*Medique
+*Consultorio
+*Obra social
 Estas cuatro tablas guardaran informaciòn basica.
- -Agenda: Relacionada a cada medique para obtener la informaciòn de los dìas y horarios en que atiende.
- - Turno: Guardara los datos de los turnos, relacionando la informaciòn de mediques, pacientes y consultorios.
- - Reprogramaciòn: 
- - Error:
- - Cobertura: Guardarà las obras sociales que atiende cada medique.
- -Liquidaciòn cabecera:
- -Liquidacion detalle:
- -Envio email:
+*Agenda: Relacionada a cada medique para obtener la informaciòn de los dìas y horarios en que atiende.
+*Turno: Guardara los datos de los turnos, relacionando la informaciòn de mediques, pacientes y consultorios.
+*Reprogramaciòn: 
+*Error:
+*Cobertura: Guardarà las obras sociales que atiende cada medique.
+*Liquidaciòn cabecera:
+*Liquidacion detalle:
+*Envio email:
 
 
 En esta sección pueden incluirse las dificultades que tuvieron, las

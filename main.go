@@ -18,37 +18,41 @@ func main() {
     var seleccion string
     fmt.Scanf("%s",&seleccion)
     
-    switch seleccion{
-		case "1":
-			crearBase()
-			break
-		case "2":
-			crearTablas()
-			break
-		case "3":
-			cargarKeys()
-			break
-		case "4":
-			cargarDatos()
-			break
-		case "5":
-			cargarFunciones()
-			break
-		case "6":
-			//testearConTabla()
-			break
-		case "7":
-			borrarKeys()
-			break
-		case "8":
-			//cargarBaseBoltDB()
-			break
-		case "q":
-			return
-			break
-		default:
-			fmt.Printf("La opción elegida no es válida\n")
+    for seleccion !="q"{
+		switch seleccion{
+			case "1":
+				crearBase()
+				break
+			case "2":
+				crearTablas()
+				break
+			case "3":
+				cargarKeys()
+				break
+			case "4":
+				cargarDatos()
+				break
+			case "5":
+				cargarFunciones()
+				break
+			case "6":
+				//testearConTabla()
+				break
+			case "7":
+				borrarKeys()
+				break
+			case "8":
+				//cargarBaseBoltDB()
+				break
+			default:
+				fmt.Printf("La opción elegida no es válida\n")
+				
+		}
+		fmt.Printf("Elija otra opción\n")
+		fmt.Scanf("%s",&seleccion)
 	}
+	
+	fmt.Printf("Adios\n")
     
 }
 

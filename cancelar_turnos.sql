@@ -7,7 +7,7 @@ declare
 	aux_paciente paciente%rowtype;
 	
 begin
-	set transaction read only;
+	--set transaction read only;
 	for t in select * from turno where turno.dni_medique = medique_dni and (turno.estado='disponible' or turno.estado='reservado') loop
 														
 		if (t.fecha::date >= desde_fecha and t.fecha::date <= hasta_fecha) then

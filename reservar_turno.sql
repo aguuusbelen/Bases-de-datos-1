@@ -9,7 +9,7 @@ declare
 	fecha_actual timestamp := current_date + current_time ;
 	
 begin
-	set transaction read only;
+	--set transaction isolation level repeatable read;
 	select * from medique into me where medique_dni = medique.dni_medique;
 	
 	if not found then --si no encuentra significa que el medique no esta en nuestra db

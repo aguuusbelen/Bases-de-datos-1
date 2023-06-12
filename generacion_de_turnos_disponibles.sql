@@ -1,4 +1,4 @@
-create function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
+create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 declare
 	turnos_en_fecha record;
 	nro_turno int;
@@ -12,7 +12,7 @@ declare
 	cant_de_turnos_cargados int;
 	
 begin	
-	set transaction read only;
+	--set transaction isolation level repeatable read;
 	-- Si hay turnos creados para ese año y mes, devuelve false.
 	if exists (
 		select * from turno where 

@@ -6,7 +6,7 @@ declare
 	pac_aux paciente%rowtype;
 	
 begin 
-	set transaction read only;
+	--set transaction read only;
 		if (old.estado='disponible' and new.estado='reservado') then --chequeo que haya sido una nueva reserva
 		
 			select * from medique into med_aux where new.dni_medique = medique.dni_medique; --en med_aux ingreso los datos del medique a cargo de este turno
@@ -73,7 +73,7 @@ end;
 $$
 language plpgsql;
 
-create trigger envio_mail_reserva_trg
+create or replace trigger envio_mail_reserva_trg
 after update on turno
 for each row
 execute function envio_mail_update();

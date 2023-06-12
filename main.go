@@ -13,7 +13,7 @@ var db *sql.DB
 func main() { 
     crearBase()
     cargarDatos()
-    generarTurnosDisponibles()
+    cargarFunciones()
 }
 
 func crearBase() {
@@ -58,7 +58,6 @@ func cargarDatos() {
 	
 }
 
-
 func ejecutar_sql(db *sql.DB, path string){
 	file, err := ioutil.ReadFile(path)
 	
@@ -74,11 +73,22 @@ func ejecutar_sql(db *sql.DB, path string){
 	}
 }
 
-func generarTurnosDisponibles() {
+
+func cargarFunciones() {
 	db:= conexionBase()
 	defer db.Close()
 	ejecutar_sql(db, "generacion_de_turnos_disponibles.sql")
+	ejecutar_sql(db, "reservar_turno.sql")
+	ejecutar_sql(db, "atencion_de_turnos.sql")
+	ejecutar_sql(db, "cancelar_turnos.sql")
+	ejecutar_sql(db, "envio_mails.sql")
+	ejecutar_sql(db, "liquidacion_para_obras_sociales.sql")
 	
 }
 
-
+func borrarPKs_FKs () {
+	db:= conexionBase()
+	defer db.Close()
+	ejecutar_sql(db, "borrarPK_FK.sql")
+	
+}

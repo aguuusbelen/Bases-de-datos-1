@@ -12,6 +12,7 @@ declare
 	cant_de_turnos_cargados int;
 	
 begin	
+	set transaction read only;
 	-- Si hay turnos creados para ese año y mes, devuelve false.
 	if exists (
 		select * from turno where 

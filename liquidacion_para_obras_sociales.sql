@@ -10,6 +10,7 @@ declare
 	nro_liquidacion_aux int;
 	
 begin
+	set transaction read only;
 	-- si ya esta liquidado
 	if exists (
 		select * from turno where 

@@ -11,9 +11,42 @@ import (
 var db *sql.DB
 
 func main() { 
-    crearBase()
-    cargarDatos()
-    cargarFunciones()
+    
+    fmt.Printf("Introduzca la opción que desee realizar:\n1. Crear las bases de datos.\n2. Cargar los datos.\n3. Agregar keys (primary y foreign).\n4. Cargar stored procedures y triggers.\n5. Testear la base usando la tabla solicitud_reservas.\n6. Borrar keys (primary y foreign).\n7. Cargar base Bolt.dbq\nq. Salir\n")
+    
+    
+    var seleccion string
+    fmt.Scanf("%s",&seleccion)
+    
+    switch seleccion{
+		case "1":
+			crearBase()
+			break
+		case "2":
+			cargarDatos()
+			break
+		case "3":
+			//cargarKeys()
+			break
+		case "4":
+			cargarFunciones()
+			break
+		case "5":
+			//testearConTabla()
+			break
+		case "6":
+			//borrarKeys()
+			break
+		case "7":
+			//cargarBaseBoltDB()
+			break
+		case "q":
+			return
+			break
+		default:
+			fmt.Printf("La opción elegida no es válida\n")
+	}
+    
 }
 
 func crearBase() {

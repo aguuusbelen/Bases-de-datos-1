@@ -12,7 +12,7 @@ var db *sql.DB
 
 func main() { 
     
-    fmt.Printf("Introduzca la opción que desee realizar:\n1. Crear las bases de datos.\n2. Cargar los datos.\n3. Agregar keys (primary y foreign).\n4. Cargar stored procedures y triggers.\n5. Testear la base usando la tabla solicitud_reservas.\n6. Borrar keys (primary y foreign).\n7. Cargar base Bolt.dbq\nq. Salir\n")
+    fmt.Printf("Introduzca la opción que desee realizar:\n1. Crear las bases de datos.\n2. Crear tablas. \n3. Agregar keys (primary y foreign).\n4. Cargar los datos. \n5. Cargar stored procedures y triggers.\n6. Testear la base usando la tabla solicitud_reservas.\n7. Borrar keys (primary y foreign).\n8. Cargar base Bolt.dbq\nq. Salir\n")
     
     
     var seleccion string
@@ -23,21 +23,24 @@ func main() {
 			crearBase()
 			break
 		case "2":
-			cargarDatos()
+			crearTablas()
 			break
 		case "3":
-			//cargarKeys()
+			cargarKeys()
 			break
 		case "4":
-			cargarFunciones()
+			cargarDatos()
 			break
 		case "5":
-			//testearConTabla()
+			cargarFunciones()
 			break
 		case "6":
-			//borrarKeys()
+			//testearConTabla()
 			break
 		case "7":
+			borrarKeys()
+			break
+		case "8":
 			//cargarBaseBoltDB()
 			break
 		case "q":
@@ -81,12 +84,21 @@ func conexionBase() *sql.DB{
 	
 	return db
 }
-
-func cargarDatos() {
+func crearTablas() {
 	db:= conexionBase()
 	defer db.Close()
 	ejecutar_sql(db, "creacion_tablas.sql")
+}
+
+func cargarKeys() {
+	db:= conexionBase()
+	defer db.Close()
 	ejecutar_sql(db, "add_PKs_FKs.sql")
+}
+	
+func cargarDatos() {
+	db:= conexionBase()
+	defer db.Close()
 	ejecutar_sql(db, "carga_valores.sql")
 	
 }
@@ -119,7 +131,7 @@ func cargarFunciones() {
 	
 }
 
-func borrarPKs_FKs () {
+func borrarKeys() {
 	db:= conexionBase()
 	defer db.Close()
 	ejecutar_sql(db, "borrarPK_FK.sql")

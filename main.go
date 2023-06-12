@@ -8,7 +8,9 @@ import (
 	"io/ioutil"
 )   
 
-func main() {
+var db *sql.DB
+
+func main() { 
     crearBase()
     cargarDatos()
     generarTurnosDisponibles()
@@ -36,17 +38,20 @@ func crearBase() {
 	
 }
 
-func coneccionBase(){
+func conexionBase() *sql.DB{
 	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=prueba2 sslmode=disable")
 	if err !=nil {
 		log.Fatal(err)
 		fmt.Println("Error al abrir la base de datos ya creada")
 	}
-	defer db.Close()
+	//defer db.Close()
+	
+	return db
 }
 
 func cargarDatos() {
-	coneccionBase()
+	db:= conexionBase()
+	defer db.Close()
 	ejecutar_sql(db, "creacion_tablas.sql")
 	ejecutar_sql(db, "add_PKs_FKs.sql")
 	ejecutar_sql(db, "carga_valores.sql")
@@ -70,7 +75,8 @@ func ejecutar_sql(db *sql.DB, path string){
 }
 
 func generarTurnosDisponibles() {
-	coneccionBase()
+	db:= conexionBase()
+	defer db.Close()
 	ejecutar_sql(db, "generacion_de_turnos_disponibles.sql")
 	
 }

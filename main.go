@@ -84,7 +84,6 @@ func conexionBase() *sql.DB{
 		log.Fatal(err)
 		fmt.Println("Error al abrir la base de datos ya creada")
 	}
-	//defer db.Close()
 	
 	return db
 }

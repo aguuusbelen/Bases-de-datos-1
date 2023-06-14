@@ -6,7 +6,7 @@ insert into solicitud_reservas values(4, 14, 20147852, '2023-06-22','10:20');
 insert into solicitud_reservas values(8, 8, 29541019, '2023-06-16','13:00');
 insert into solicitud_reservas values(6, 13,31759846, '2023-06-19','10:00');
 insert into solicitud_reservas values(9, 4, 30668951, '2023-06-19','15:15');
-insert into solicitud_reservas values(7, 15, 30668951, '2023-06-21','12:00');
+insert into solicitud_reservas values(7, 15, 30668951, '2023-06-14','12:00');
 insert into solicitud_reservas values(10, 16, 27401511, '2023-06-27','10:40');
 
 create or replace function test_reservas() returns void as $$

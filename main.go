@@ -56,6 +56,7 @@ func ejecutarOpcion(selec string){
 			case "9":
 				//fmt.Printf("Cargando BoltDB\n")
 				//cargarBaseBoltDB()
+				f.AtenderTurnos_Dia()
 				break
 			case "10":
 				fmt.Printf("Eliminando base de datos\n")

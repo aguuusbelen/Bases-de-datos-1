@@ -156,20 +156,58 @@ type Paciente struct{
 	Email string `json:"email"`
 }
 
+type Medique struct{
+	Dni_medique int `json:"dni_medique"`
+	Nombre string `json:"nombre"`
+	Apellido string `json:"apellido"`
+	Especialidad any `json:"especialidad,omitempty"`
+	Monto_consulta_privada string `json:"monto_consulta_privada"`
+	Telefono string `json:telefono"`
+}
+
+type Consultorio struct{
+	Nro_consultorio int `json:"nro_consultorio"`
+	Nombre string `json:"nombre"`
+	Domicilio string `json:"domicilio"`
+	Codigo_postal string `json:"codigo_postal"`
+	Telefono string `json:telefono"`
+}
+
+type Obra_social struct{
+	Nro_obra_social int `json:"nro_obra_social"`
+	Nombre string `json:"nombre"`
+	Contacto_nombre string `json:"contacto_nombre"`
+	Contacto_apellido string `json:"contacto_apellido"`
+	Contacto_telefono string `json:"contacto_telefono"`
+	Contacto_email string `json:"contacto_email"`
+}
+
+type Turno struct{
+	Nro_turno int `json:"nro_turno"`
+	Fecha string `json:"fecha"`
+	Nro_consultorio string `json:"nro_consultorio"`
+	Dni_medique int `json:"dni_medique"`
+	Nro_paciente int `json:"nro_paciente"`
+	Nro_obra_social_consulta any `json:"nro_obra_social_consulta, omitempty"`
+	Nro_afiliade_consulta any `json:"nro_afiliade_consulta, omitempty"`
+	Monto_paciente string `json:"monto_paciente"`
+	Monto_obra_social any `json:"monto_obra_social,omitempty"`
+	F_reserva string `json:"f_reserva"`
+	Estado string `json:"estado"`
+}
+
 func CrearBoltDB() {
 
-	// Abrimos la bolt bd
+	// Abrimos la BoltDB
 	dbbolt, err := bolt.Open("bolt.db", 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer dbbolt.Close()
 
-	// Abrimos la bd 
+	// Abrimos la bd psql 
 	db:= conexionBase()
 	defer db.Close()
-
-	// var lista_pac []Paciente
 
 	// Obtenemos todos los pacientes
 	rows_pacientes, err:= db.Query(`select * from paciente`)
@@ -182,19 +220,95 @@ func CrearBoltDB() {
 		if err:= rows_pacientes.Scan(&pac.Nro_paciente, &pac.Nombre, &pac.Apellido, &pac.Dni_paciente, &pac.F_nac, &pac.Nro_obra_social, &pac.Nro_afiliade, &pac.Domicilio, &pac.Telefono, &pac.Email); err!=nil{
 			log.Fatal(err)
 		}
-		// lista_pac=append(lista_pac,pac)
-		
+
 		// transformamos al paciente al formato json
 		data_pac, err:=json.MarshalIndent(pac, "", "     ")
 		if err!=nil{
 			log.Fatalf("%s",err)	
 		}
 		
-		// se cargan los pacientes en la db bolt
+		// se cargan los pacientes en la BoltDB
 		CreateUpdate(dbbolt, "pacientes", []byte(strconv.Itoa(pac.Nro_paciente)), data_pac)
 		resultado1, err := ReadUnique(dbbolt, "pacientes", []byte(strconv.Itoa(pac.Nro_paciente)))
 		fmt.Printf("%s\n", resultado1)
 	}
+	
+	// Obtenemos todos los mediques
+	rows_mediques, err:= db.Query(`select * from medique`)
+	if err!=nil{
+		log.Fatal(err)
+	}
+
+	for rows_mediques.Next(){
+		var med Medique
+		if err:= rows_mediques.Scan(&med.Dni_medique, &med.Nombre, &med.Apellido, &med.Especialidad, &med.Monto_consulta_privada, &med.Telefono); err!=nil{
+			log.Fatal(err)
+		}
+
+		// transformamos al medique al formato json
+		data_med, err:=json.MarshalIndent(med, "", "     ")
+		if err!=nil{
+			log.Fatalf("%s",err)	
+		}
+		
+		// se cargan los mediques en la BoltDB
+		CreateUpdate(dbbolt, "mediques", []byte(strconv.Itoa(med.Dni_medique)), data_med)
+		resultado2, err := ReadUnique(dbbolt, "mediques", []byte(strconv.Itoa(med.Dni_medique)))
+		fmt.Printf("%s\n", resultado2)
+	
+	}
+	
+	// Obtenemos todos los consultorios
+	rows_consultorios, err:= db.Query(`select * from consultorio`)
+	if err!=nil{
+		log.Fatal(err)
+	}
+
+	for rows_consultorios.Next(){
+		var consul Consultorio
+		if err:= rows_consultorios.Scan(&consul.Nro_consultorio, &consul.Nombre, &consul.Domicilio, &consul.Codigo_postal, &consul.Telefono); err!=nil{
+			log.Fatal(err)
+		}
+
+		// transformamos al consultorio al formato json
+		data_consul, err:=json.MarshalIndent(consul, "", "     ")
+		if err!=nil{
+			log.Fatalf("%s",err)	
+		}
+		
+		// se cargan los consultorios en la BoltDB
+		CreateUpdate(dbbolt, "consultorios", []byte(strconv.Itoa(consul.Nro_consultorio)), data_consul)
+		resultado3, err := ReadUnique(dbbolt, "consultorios", []byte(strconv.Itoa(consul.Nro_consultorio)))
+		fmt.Printf("%s\n", resultado3)
+	
+	}
+	
+	// Obtenemos todas las obras sociales
+	rows_obras_sociales, err:= db.Query(`select * from obra_social`)
+	if err!=nil{
+		log.Fatal(err)
+	}
+
+	for rows_obras_sociales.Next(){
+		var os Obra_social
+		if err:= rows_obras_sociales.Scan(&os.Nro_obra_social, &os.Nombre, &os.Contacto_nombre, &os.Contacto_apellido, &os.Contacto_telefono, &os.Contacto_email); err!=nil{
+			log.Fatal(err)
+		}
+
+		// transformamos al consultorio al formato json
+		data_os, err:=json.MarshalIndent(os, "", "     ")
+		if err!=nil{
+			log.Fatalf("%s",err)	
+		}
+		
+		// se cargan los consultorios en la BoltDB
+		CreateUpdate(dbbolt, "obras_sociales", []byte(strconv.Itoa(os.Nro_obra_social)), data_os)
+		resultado4, err := ReadUnique(dbbolt, "obras_sociales", []byte(strconv.Itoa(os.Nro_obra_social)))
+		fmt.Printf("%s\n", resultado4)
+	}
+	
+	
+	
 }
 
 

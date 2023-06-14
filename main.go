@@ -54,14 +54,9 @@ func ejecutarOpcion(selec string){
 				f.BorrarKeys()
 				break
 			case "9":
-				//fmt.Printf("Cargando BoltDB\n")
-				//cargarBaseBoltDB()
-<<<<<<< HEAD
 				fmt.Printf("Creando Bolt DB\n")
 				f.CrearBoltDB()
-=======
-				f.AtenderTurnos_Dia()
->>>>>>> 839021e911bb02d6859fb99fc5249c5b783c3b78
+				//f.AtenderTurnos_Dia()
 				break
 			case "10":
 				fmt.Printf("Eliminando base de datos\n")
@@ -75,14 +70,6 @@ func ejecutarOpcion(selec string){
 		fmt.Scanf("%s",&selec)
 	}
 	
-<<<<<<< HEAD
-	fmt.Printf("Adios\n")
-    
-}
-
-
-
-=======
 	fmt.Printf("Adios. Gracias por utilizar el sistema!\n")
       
 }
@@ -103,4 +90,4 @@ func mostrarOpciones() {
 
 	fmt.Print("Elija una opcion: \n")
 }
->>>>>>> 839021e911bb02d6859fb99fc5249c5b783c3b78
+

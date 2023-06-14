@@ -20,27 +20,35 @@ func main() {
     for seleccion !="q"{
 		switch seleccion{
 			case "1":
+				fmt.Printf("Creando base de datos")
 				f.CrearBase()
 				break
 			case "2":
+				fmt.Printf("Creando tablas")
 				f.CrearTablas()
 				break
 			case "3":
+				fmt.Printf("Cargando primary keys y foreign keys")
 				f.CargarKeys()
 				break
 			case "4":
+				fmt.Printf("Cargando datos")
 				f.CargarDatos()
 				break
 			case "5":
+				fmt.Printf("Cargando funciones")
 				f.CargarFunciones()
 				break
 			case "6":
+				fmt.Printf("Generando turnos")
 				f.GenerarTurnosDisponibles_Mes(2023,6)
 				break
 			case "7":
+				fmt.Printf("Testeando")
 				f.TestearConTabla()
 				break
 			case "8":
+				fmt.Printf("Eliminando keys")
 				f.BorrarKeys()
 				break
 			case "9":
@@ -58,6 +66,8 @@ func main() {
 	}
 	
 	fmt.Printf("Adios\n")
+    
+    
     
 }
 

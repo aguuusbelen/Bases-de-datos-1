@@ -48,38 +48,38 @@ func BorrarBase(){
 func CrearTablas() {
 	db:= conexionBase()
 	defer db.Close()
-	ejecutar_sql(db, "creacion_tablas.sql")
+	ejecutar_sql(db, "archivosSQL/creacion_tablas.sql")
 }
 
 func CargarKeys() {
 	db:= conexionBase()
 	defer db.Close()
-	ejecutar_sql(db, "add_PKs_FKs.sql")
+	ejecutar_sql(db, "archivosSQL/add_PKs_FKs.sql")
 }
 	
 func CargarDatos() {
 	db:= conexionBase()
 	defer db.Close()
-	ejecutar_sql(db, "carga_valores.sql")
+	ejecutar_sql(db, "archivosSQL/carga_valores.sql")
 	
 }
 
 func CargarFunciones() {
 	db:= conexionBase()
 	defer db.Close()
-	ejecutar_sql(db, "generacion_de_turnos_disponibles.sql")
-	ejecutar_sql(db, "reservar_turno.sql")
-	ejecutar_sql(db, "atencion_de_turnos.sql")
-	ejecutar_sql(db, "cancelar_turnos.sql")
-	ejecutar_sql(db, "envio_mails.sql")
-	ejecutar_sql(db, "liquidacion_para_obras_sociales.sql")
+	ejecutar_sql(db, "archivosSQL/generacion_de_turnos_disponibles.sql")
+	ejecutar_sql(db, "archivosSQL/reservar_turno.sql")
+	ejecutar_sql(db, "archivosSQL/atencion_de_turnos.sql")
+	ejecutar_sql(db, "archivosSQL/cancelar_turnos.sql")
+	ejecutar_sql(db, "archivosSQL/envio_mails.sql")
+	ejecutar_sql(db, "archivosSQL/liquidacion_para_obras_sociales.sql")
 	
 }
 
 func BorrarKeys() {
 	db:= conexionBase()
 	defer db.Close()
-	ejecutar_sql(db, "borrarPK_FK.sql")
+	ejecutar_sql(db, "archivosSQL/borrarPK_FK.sql")
 	
 }
 
@@ -110,7 +110,7 @@ func Liquidar_obra_social (anio, mes, nro_OS int) {
 func TestearConTabla() {
 	db:= conexionBase()
 	defer db.Close()
-	ejecutar_sql(db, "test_reservas.sql")
+	ejecutar_sql(db, "archivosSQL/test_reservas.sql")
 }
 
 

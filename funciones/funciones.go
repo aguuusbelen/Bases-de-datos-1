@@ -7,6 +7,9 @@ import (
     _ "github.com/lib/pq"
     "log"
 	"io/ioutil"
+	"encoding/json"
+	bolt "go.etcd.io/bbolt"
+	"strconv"
 )   
 //Variables
 var db *sql.DB
@@ -140,3 +143,87 @@ func ejecutar_sql(db *sql.DB, path string){
 	}
 }
 
+type Paciente struct{
+	Nro_paciente int `json:"nro_paciente"`
+	Nombre string `json:"nombre"`
+	Apellido string `json:"apellido"`
+	Dni_paciente int `json:"dni_paciente"`
+	F_nac string `json:"f_nac"`
+	Nro_obra_social any `json:"nro_obra_social,omitempty"`
+	Nro_afiliade any  `json:"nro_afiliade,omitempty"`
+	Domicilio string `json:"domicilio"`
+	Telefono string `json:"telefono"`
+	Email string `json:"email"`
+}
+
+func CrearBoltDB() {
+
+	// Abrimos la bolt bd
+	dbbolt, err := bolt.Open("bolt.db", 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer dbbolt.Close()
+
+	// Abrimos la bd 
+	db:= conexionBase()
+	defer db.Close()
+
+	// var lista_pac []Paciente
+
+	// Obtenemos todos los pacientes
+	rows_pacientes, err:= db.Query(`select * from paciente`)
+	if err!=nil{
+		log.Fatal(err)
+	}
+
+	for rows_pacientes.Next(){
+		var pac Paciente
+		if err:= rows_pacientes.Scan(&pac.Nro_paciente, &pac.Nombre, &pac.Apellido, &pac.Dni_paciente, &pac.F_nac, &pac.Nro_obra_social, &pac.Nro_afiliade, &pac.Domicilio, &pac.Telefono, &pac.Email); err!=nil{
+			log.Fatal(err)
+		}
+		// lista_pac=append(lista_pac,pac)
+		
+		// transformamos al paciente al formato json
+		data_pac, err:=json.MarshalIndent(pac, "", "     ")
+		if err!=nil{
+			log.Fatalf("%s",err)	
+		}
+		
+		// se cargan los pacientes en la db bolt
+		CreateUpdate(dbbolt, "pacientes", []byte(strconv.Itoa(pac.Nro_paciente)), data_pac)
+		resultado1, err := ReadUnique(dbbolt, "pacientes", []byte(strconv.Itoa(pac.Nro_paciente)))
+		fmt.Printf("%s\n", resultado1)
+	}
+}
+
+
+func CreateUpdate(db *bolt.DB, bucketName string, key []byte, val []byte) error {
+	// abre transacción de escritura
+	tx, err := db.Begin(true)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	b, _ := tx.CreateBucketIfNotExists([]byte(bucketName))
+	err = b.Put(key, val)
+	if err != nil {
+		return err
+	}
+	// cierra transacción
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func ReadUnique(db *bolt.DB, bucketName string, key []byte) ([]byte, error) {
+	var buf []byte
+	// abre una transacción de lectura
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(bucketName))
+		buf = b.Get(key)
+		return nil
+	})
+	return buf, err
+}

@@ -14,7 +14,7 @@ begin
 	
 	if not found then --si no encuentra significa que el medique no esta en nuestra db
 		insert into error (f_turno, nro_consultorio, dni_medique, nro_paciente, operacion, f_error, motivo) 
-								values (t.fecha, t.nro_consultorio, t.dni_medique, t.nro_paciente, 'reserva', fecha_actual, 'dni de médique no válido'); 
+								values (fecha_f, null, medique_dni, paciente_ID, 'reserva', fecha_actual, 'dni de médique no válido'); 
 		return false;
 	end if;
 	
@@ -22,7 +22,7 @@ begin
 	
 	if not found then --si no encuentra significa que el paciente no esta en nuestra db
 		insert into error (f_turno, nro_consultorio, dni_medique, nro_paciente, operacion, f_error, motivo) 
-								values (t.fecha, t.nro_consultorio, t.dni_medique, t.nro_paciente, 'reserva', fecha_actual, 'número de historia clinica no válido');
+								values (fecha_f, null, medique_dni, paciente_ID, 'reserva', fecha_actual, 'número de historia clinica no válido');
 		return false;
 	end if;
 	
@@ -31,7 +31,7 @@ begin
 	
 	if not found and p.nro_obra_social is not null then --si no encuentra significa que el medico no atiende esa obra social
 		insert into error (f_turno, nro_consultorio, dni_medique, nro_paciente, operacion, f_error, motivo) 
-								values (t.fecha, t.nro_consultorio, t.dni_medique, t.nro_paciente, 'reserva', fecha_actual, 'obra social de paciente no atendida por le médique');
+								values (fecha_f, null, medique_dni, paciente_ID, 'reserva', fecha_actual, 'obra social de paciente no atendida por le médique');
 		return false;
 	end if;
 	
@@ -39,7 +39,7 @@ begin
 	
 	if not found then --si no encuentra, significa que no hay turnos disponibles para la fecha requerida
 		insert into error (f_turno, nro_consultorio, dni_medique, nro_paciente, operacion, f_error, motivo) 
-								values (t.fecha, t.nro_consultorio, t.dni_medique, t.nro_paciente, 'reserva', fecha_actual, 'turno inexistente ó no disponible');
+								values (fecha_f, null, medique_dni, paciente_ID, 'reserva', fecha_actual, 'turno inexistente ó no disponible');
 		return false;
 	end if;
 	

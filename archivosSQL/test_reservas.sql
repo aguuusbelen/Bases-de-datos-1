@@ -14,6 +14,7 @@ insert into solicitud_reservas values(12, 20,20147852, '2023-06-21', '10:40'); -
 insert into solicitud_reservas values(13, 8,21036258, '2023-06-16', '10:30'); --Turno invalido: Horario fuera de atencion
 insert into solicitud_reservas values(14, 8,21036258, '2023-06-16', '12:10'); --Turno invalido: Horario fuera de intervalos de atencion
 insert into solicitud_reservas values(15, 8,21036258, '2023-06-16', '18:00'); --Turno invalido: Horario fuera de atencion/limite 
+insert into solicitud_reservas values (15, 2, 30668951, '2023-06-14', '09:00');
 
 --Stored procedure para reservar los turnos cargados en la tabla solicitud_reservas
 create or replace function test_reservas() returns void as $$

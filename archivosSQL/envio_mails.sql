@@ -57,7 +57,7 @@ begin
 						values (current_date + current_time, pac_aux.email, subject, body, null, 'pendiente');
 	end loop;
 	
-	for turno_aux in select turno.fecha from turno where estado='reservado' and current_date = date_trunc('day',turno.fecha) loop --esta query me da los turnos que pasaron el día de hoy sin pasarse a atendidos
+	for turno_aux in select * from turno where estado='reservado' and current_date = date_trunc('day',turno.fecha) loop --esta query me da los turnos que pasaron el día de hoy sin pasarse a atendidos
 		
 		select * from medique into med_aux where turno_aux.dni_medique = medique.dni_medique;
 		select * from paciente into pac_aux where turno_aux.nro_paciente = paciente.nro_paciente;

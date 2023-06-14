@@ -9,52 +9,56 @@ import (
 	f "buffagna-curcio-mendez-tp/funciones"
 )   
 
-
-
 func main() { 
     
-    fmt.Printf("Introduzca la opción que desee realizar:\n1. Crear las bases de datos.\n2. Crear tablas. \n3. Agregar keys (primary y foreign).\n4. Cargar los datos. \n5. Cargar stored procedures y triggers.\n6. Generar turnos disponibles. \n7. Testear la base usando la tabla solicitud_reservas.\n8. Borrar keys (primary y foreign).\n9. Cargar base Bolt.dbq\n10. Borrar base de datos. \nq. Salir\n")
+    mostrarOpciones()
     var seleccion string
     fmt.Scanf("%s",&seleccion)
+    ejecutarOpcion(seleccion)
     
-    for seleccion !="q"{
-		switch seleccion{
+}
+
+func ejecutarOpcion(selec string){    
+    for selec !="q"{
+		switch selec{
 			case "1":
-				fmt.Printf("Creando base de datos")
+				fmt.Printf("Creando base de datos\n")
 				f.CrearBase()
 				break
 			case "2":
-				fmt.Printf("Creando tablas")
+				fmt.Printf("Creando tablas\n")
 				f.CrearTablas()
 				break
 			case "3":
-				fmt.Printf("Cargando primary keys y foreign keys")
+				fmt.Printf("Cargando primary keys y foreign keys\n")
 				f.CargarKeys()
 				break
 			case "4":
-				fmt.Printf("Cargando datos")
+				fmt.Printf("Cargando datos\n")
 				f.CargarDatos()
 				break
 			case "5":
-				fmt.Printf("Cargando funciones")
+				fmt.Printf("Cargando funciones\n")
 				f.CargarFunciones()
 				break
 			case "6":
-				fmt.Printf("Generando turnos")
+				fmt.Printf("Generando turnos\n")
 				f.GenerarTurnosDisponibles_Mes(2023,6)
 				break
 			case "7":
-				fmt.Printf("Testeando")
+				fmt.Printf("Testeando\n")
 				f.TestearConTabla()
 				break
 			case "8":
-				fmt.Printf("Eliminando keys")
+				fmt.Printf("Eliminando keys\n")
 				f.BorrarKeys()
 				break
 			case "9":
+				//fmt.Printf("Cargando BoltDB\n")
 				//cargarBaseBoltDB()
 				break
 			case "10":
+				fmt.Printf("Eliminando base de datos\n")
 				f.BorrarBase()
 				break
 			default:
@@ -62,12 +66,26 @@ func main() {
 				
 		}
 		fmt.Printf("Elija otra opción\n")
-		fmt.Scanf("%s",&seleccion)
+		fmt.Scanf("%s",&selec)
 	}
 	
-	fmt.Printf("Adios\n")
-    
-    
-    
+	fmt.Printf("Adios. Gracias por utilizar el sistema!\n")
+      
 }
 
+func mostrarOpciones() {
+	fmt.Print("\n Introduzca la opción que desee realizar:\n")
+	fmt.Print("1. Crear base de datos. \n")
+	fmt.Print("2. Crear tablas. \n")
+	fmt.Print("3. Agregar keys (primary and foreign). \n")
+	fmt.Print("4. Cargar los datos.\n")
+	fmt.Print("5. Crear stored procedures y Triggers.\n")
+	fmt.Print("6. Generar turnos disponibles.\n")
+	fmt.Print("7. Testear la base usando la tabla solicitud_reservas.\n")
+	fmt.Print("8. Borrar keys (primary y foreign).\n")
+	fmt.Print("9. Cargar base Bolt.dbq\n")
+	fmt.Print("10. Borrar base de datos. \n")
+	fmt.Print("q. Salir. \n\n")
+
+	fmt.Print("Elija una opcion: \n")
+}

@@ -37,7 +37,7 @@ func CrearBase() {
 func BorrarBase(){
 	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=postgres sslmode=disable")
 	defer db.Close()
-	_, err = db.Query(`drop database if exists prueba2;`)
+	_, err = db.Exec(`drop database if exists prueba2;`)
 	if err != nil {
 		log.Fatal(err)
 		fmt.Println("Error al eliminar la base de datos")
@@ -92,7 +92,7 @@ func GenerarTurnosDisponibles_Mes(anio, mes int){
 		log.Fatal(err)
 		fmt.Println("Error al generar los turnos del mes ")
 	}
-	fmt.Printf("Creacion turnos %d-%d\n",anio,mes)
+	
 }
 
 
@@ -104,7 +104,7 @@ func Liquidar_obra_social (anio, mes, nro_OS int) {
 		log.Fatal(err)
 		fmt.Println("Error al liquidar obra social")
 	}
-	fmt.Printf("Liquidacion de %d-%d\n",anio,mes)
+
 }
 
 func TestearConTabla() {

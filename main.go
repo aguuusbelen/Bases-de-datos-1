@@ -50,15 +50,18 @@ func ejecutarOpcion(selec string){
 				f.TestearConTabla()
 				break
 			case "8":
+				fmt.Printf("Enviando mails diarios \n")
+				f.EnvioMailsDiarios()
+			case "9":
 				fmt.Printf("Eliminando keys\n")
 				f.BorrarKeys()
 				break
-			case "9":
+			case "10":
 				fmt.Printf("Creando Bolt DB\n")
 				f.CrearBoltDB()
 				//f.AtenderTurnos_Dia()
 				break
-			case "10":
+			case "11":
 				fmt.Printf("Eliminando base de datos\n")
 				f.BorrarBase()
 				break
@@ -83,9 +86,10 @@ func mostrarOpciones() {
 	fmt.Print("5. Crear stored procedures y Triggers.\n")
 	fmt.Print("6. Generar turnos disponibles.\n")
 	fmt.Print("7. Testear la base usando la tabla solicitud_reservas.\n")
-	fmt.Print("8. Borrar keys (primary y foreign).\n")
-	fmt.Print("9. Cargar base Bolt.dbq\n")
-	fmt.Print("10. Borrar base de datos. \n")
+	fmt.Print("8. Enviar mails diarios.\n")
+	fmt.Print("9. Borrar keys (primary y foreign).\n")
+	fmt.Print("10. Cargar base Bolt.dbq\n")
+	fmt.Print("11. Borrar base de datos. \n")
 	fmt.Print("q. Salir. \n\n")
 
 	fmt.Print("Elija una opcion: \n")

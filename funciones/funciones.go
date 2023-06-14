@@ -116,6 +116,15 @@ func TestearConTabla() {
 	ejecutar_sql(db, "archivosSQL/test_reservas.sql")
 }
 
+func EnvioMailsDiarios(){
+	db:= conexionBase()
+	defer db.Close()
+	_, err := db.Query(`select envio_mail_diario()`)
+	if err != nil {
+		log.Fatal(err)
+		fmt.Println("Error al enviar mails")
+	}
+}
 
 //Funciones auxiliares
 func conexionBase() *sql.DB{

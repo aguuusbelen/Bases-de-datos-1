@@ -50,8 +50,8 @@ Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo 
 //Falta explicar algun problema con los mails? o con liquidaciones?
 * *Transacciones*: Para evitar que se asigne el mismo turno a dos pacientes diferentes, es necesario el uso de transacciones. Esto nos generó un problema donde no pudimos encontrar solución 
 
-.Error en transacciones
-image::errorTransacciones.jpg[]
+	.Error en transacciones
+	image::errorTransacciones.jpg[]
 
 Se agregaron instancias de datos que permitan testear el sistema. 
 La base de datos se implementa sobre la postgresSQL.
@@ -59,8 +59,7 @@ La base de datos se implementa sobre la postgresSQL.
 //La carga de datos y el desarrollo del sistema (parte lógica) se realizan en el leguaje de programación SQL. 
 //Con lo cual se desarrollo, utilizando el lenguaje de programación GO, un menú con las opciones de las funciones a ejecutar por el sistema.  
 
-//También, se puede incluir una descripción general del programa—cómo
-funciona.
+//También, se puede incluir una descripción general del programa—cómo funciona.
 
 //En esta sección pueden incluirse las dificultades que tuvieron, las
 //soluciones encontradas, las decisiones que se fueron tomando a lo largo
@@ -82,8 +81,7 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
  * reservar_turno.sql: crea la función Reservar_turno(int,int,timestamp) que recibe como parámetro el número de paciente, DNI del medique, fecha y hora del turno a resrevar.
   Devuelve un booleano indicando si se pudo realizar la reserva, en caso de que se concrete la reserva el turno se indica en la tabla turno como reservado y se envía un email al paciente. 
 
-	[source, c]
-	----	
+	
 	create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 	declare
 		turnos_en_fecha record;
@@ -119,13 +117,12 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 		return true;
 	end;
 	$$ language plpgsql;
-	----
+	
  
  * atención_de_turno.sql: crea la función Atencion_de_turno(int) que recibe como parámetro el número del turno que se desea atender y retorna un booleano indicando si se pudo realizar elprocedimiento.
   Esta función marca como atendido el turno indicado si coincide con lafecha actual, en caso contrario se cargan los errores en la tabla error.
 	
-	[source, c]
-	----	
+	
 	create or replace function Atencion_de_turno(turno_nro int) returns boolean as $$
 	declare
 		t turno%rowtype;
@@ -157,13 +154,12 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 			end if;
 	end;
 	$$ language plpgsql;
-	----
+	
 
  * liquidacion_para_obras_sociales.sql: crea la función liquidacion_para_obras_sociales(int, int, int) que recibe como parámetrosel mes, anio y el número de la obra social de la liquidación a realiar.
   Retorna el monto tortal a liquidar. Se generá la liquidación una vez por mes, en caso de no haber liquidado aquellos turnos que figuren como atendidos se liquidaron, además se cargan los datos correspondientes a la liquidacion total en la tabla liquidacion_cabecera y el datalle de cada atención a liquidar de cada turno en la tabla liquidacion_detalle.
 	
-	[source, c]
-	----	
+		
 	create or replace function Liquidacion_para_obras_sociales(anio int, mes int, numero_obra_social int) returns decimal as $$
 	declare
 		t_aux turno%rowtype;
@@ -184,8 +180,8 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 		-- en caso que no este liquidado
 		insert into liquidacion_cabecera (nro_obra_social, desde, hasta, total) values
 				(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion); --se crea la liquidacion 	
-		nro_liquidacion_aux = (SELECT MAX(nro_liquidacion) from liquidacion_cabecera) :: int;
-		monto_liquidacion = 0;		
+				nro_liquidacion_aux = (SELECT MAX(nro_liquidacion) from liquidacion_cabecera) :: int;
+				monto_liquidacion = 0;		
 		for t_aux in select * from turno where turno.nro_obra_social_consulta = numero_obra_social and turno.estado='atendido' loop												
 			if (t_aux.fecha ::date >= fecha_aux_inicio  and t_aux.fecha ::date <= fecha_aux_final) then
 				select * into medique_aux from medique where t_aux.dni_medique=medique.dni_medique;
@@ -204,7 +200,7 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 		return monto_liquidacion;
 	end;
 	$$ language plpgsql;
-	----
+	
 
 //En esta sección se incluye el código fuente correctamente formateado—y
 //comentado, si corresponde.

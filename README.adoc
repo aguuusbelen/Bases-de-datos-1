@@ -455,6 +455,7 @@ En esta carpeta se encuentra el codigo en go para implementar los stored procedu
 ----
 
 * *CrearBoltDB.go*: Contiene la logica para codificar lo realizado en Go a JSON
+
 [source, go]
 ----		
 type Consultorio struct{

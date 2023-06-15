@@ -53,6 +53,26 @@ Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo 
 	.Error en transacciones
 	image::errorTransacciones.jpg[]
 
+* *BoltDB*: Para recuperar los datos de las tablas y hacer el marshalling de Go a JSON, tuvimos problemas con los valores nulos de los pacientes sin obra social.
+	
+	.Paciente
+	image::datosnull.jpg[]
+	
+	Se solucionó utilizando any para descartar los valores nulos
+	
+	type Paciente struct{
+		Nro_paciente int `json:"nro_paciente"`
+		Nombre string `json:"nombre"`
+		Apellido string `json:"apellido"`
+		Dni_paciente int `json:"dni_paciente"`
+		F_nac string `json:"f_nac"`
+		Nro_obra_social any `json:"nro_obra_social,omitempty"`
+		Nro_afiliade any  `json:"nro_afiliade,omitempty"`
+		Domicilio string `json:"domicilio"`
+		Telefono string `json:"telefono"`
+		Email string `json:"email"`
+	}
+
 Se agregaron instancias de datos que permitan testear el sistema. 
 La base de datos se implementa sobre la postgresSQL.
 //NO ME CONVENCE REDACCION 

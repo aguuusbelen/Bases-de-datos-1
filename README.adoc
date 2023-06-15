@@ -60,6 +60,8 @@ Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo 
 	
 	Se solucionó utilizando any para descartar los valores nulos
 	
+	[source, c]
+	----
 	type Paciente struct{
 		Nro_paciente int `json:"nro_paciente"`
 		Nombre string `json:"nombre"`
@@ -101,7 +103,8 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
  * reservar_turno.sql: crea la función Reservar_turno(int,int,timestamp) que recibe como parámetro el número de paciente, DNI del medique, fecha y hora del turno a resrevar.
   Devuelve un booleano indicando si se pudo realizar la reserva, en caso de que se concrete la reserva el turno se indica en la tabla turno como reservado y se envía un email al paciente. 
 
-	
+	[source, c]
+	----
 	create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 	declare
 		turnos_en_fecha record;
@@ -142,7 +145,8 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
  * atención_de_turno.sql: crea la función Atencion_de_turno(int) que recibe como parámetro el número del turno que se desea atender y retorna un booleano indicando si se pudo realizar elprocedimiento.
   Esta función marca como atendido el turno indicado si coincide con lafecha actual, en caso contrario se cargan los errores en la tabla error.
 	
-	
+	[source, c]
+	----
 	create or replace function Atencion_de_turno(turno_nro int) returns boolean as $$
 	declare
 		t turno%rowtype;

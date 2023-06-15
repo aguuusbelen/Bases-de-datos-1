@@ -48,7 +48,6 @@ Durante el desarrollo del trabajo, nos fuimos encontrando con distintas dificult
 	
 Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo que decidimos usar serial para el número de turno.
 
-//Falta explicar algun problema con los mails? o con liquidaciones?
 * *Transacciones*: Para evitar que se asigne el mismo turno a dos pacientes diferentes, es necesario el uso de transacciones. Esto nos generó un problema donde no pudimos encontrar solución 
 
 	.Error en transacciones
@@ -61,9 +60,9 @@ Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo 
 	
 	Se solucionó utilizando any para descartar los valores nulos
 	
-	[source, c]
-	----
-	type Paciente struct{
+[source, c]
+----
+type Paciente struct{
 		Nro_paciente int `json:"nro_paciente"`
 		Nombre string `json:"nombre"`
 		Apellido string `json:"apellido"`
@@ -73,9 +72,9 @@ Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo 
 		Nro_afiliade any  `json:"nro_afiliade,omitempty"`
 		Domicilio string `json:"domicilio"`
 		Telefono string `json:"telefono"`
-		Email string `json:"email"`
-	}
-	----
+		Email string `json:"email"`	
+}
+----
 
 Se agregaron instancias de datos que permitan testear el sistema. 
 La base de datos se implementa sobre la postgresSQL.

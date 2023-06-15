@@ -103,7 +103,8 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
  * _generacion_de_turnos_disponibles.sql_: crea la función Generar_turnos_disponibles(int,int) que recibe el año y mes de los turnos que se quieren generar y retorna un booleano indicando si fue posible la operación. Esta función genera todos los turnos de les mediques para el mes indicado, según la agenda de turnos ya indicada. 
 	
 [source, c]
-----create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
+----
+create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 declare
 	turnos_en_fecha record;
 	nro_turno int;
@@ -150,7 +151,7 @@ begin
 	
 end;
 $$ language plpgsql;
-	----
+----
  * _reservar_turno.sql_: crea la función Reservar_turno(int,int,timestamp) que recibe como parámetro el número de paciente, DNI del medique, fecha y hora del turno a reservar.
   Devuelve un booleano indicando si se pudo realizar la reserva, en caso de que se concrete la reserva el turno se indica en la tabla turno como reservado y se envía un email al paciente. 
 

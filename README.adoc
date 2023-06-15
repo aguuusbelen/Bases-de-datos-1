@@ -35,7 +35,7 @@ Durante el desarrollo del trabajo, nos fuimos encontrando con distintas dificult
 * Interpretar como manejar la conexión entre go y psql fue un gran desafío, el principal problema fue que no entendíamos como pasarle parámetros desde go a una query de sql, pero con la ayuda del profe Daniel pudimos avanzar con eso, y a medida que trabajabamos se hacía todo un poco más ameno.
 * *Generar los turnos disponibles*: Luego de realizar una primer generación de turnos, los turnos siguientes se intentaban insertar nuevamente desde el inicio con nro_turno=1. Primeramente lo solucionamos agregando logica para verificar cual era la ultima fila de la tabla y a partir de alli insertar los nuevos numeros de turno. 
 
-[source, c]
+[source, sql]
 ----	
 	cant_de_turnos_cargados := (select count (*) from turno);
 	if cant_de_turnos_cargados != 0 then
@@ -60,7 +60,7 @@ image::datosnull.jpg[]
 	
 Se solucionó utilizando any para descartar los valores nulos
 	
-[source, c]
+[source, sql]
 ----
 type Paciente struct{
 		Nro_paciente int `json:"nro_paciente"`
@@ -78,7 +78,6 @@ type Paciente struct{
 
 Se agregaron instancias de datos que permitan testear el sistema. 
 La base de datos se implementa sobre la postgresSQL.
-//NO ME CONVENCE REDACCION 
 Se utiliza el lenguaje de programación PSQL para llevar a cabo la carga de datos y el desarrollo de la parte lógica del sistema. Además, creamos un menú utilizando el lenguaje de programación GO, que contiene distintas opciones elegibles para correr distintas las funcionalidades del sistema.
 
 //También, se puede incluir una descripción general del programa—cómo funciona.
@@ -102,7 +101,7 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
  * _test_reservas_.sql : introduce en la tabla solicitud_reservas unas reservas que seleccionamos nosotros en forma de prueba, y las reserva con la function reservar_turno().
  * _generacion_de_turnos_disponibles.sql_: crea la función Generar_turnos_disponibles(int,int) que recibe el año y mes de los turnos que se quieren generar y retorna un booleano indicando si fue posible la operación. Esta función genera todos los turnos de les mediques para el mes indicado, según la agenda de turnos ya indicada. 
 	
-[source, c]
+[source, sql]
 ----
 create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 declare
@@ -282,7 +281,8 @@ Esta función marca como atendido el turno indicado si coincide con lafecha actu
 	
 * _envio_mails.sql_ : genera un trigger y una function que se encargarán de los mails enviados por el sistema. Crea el trigger envio_mail_update(), el cual envía un mail si se modificó algún registro de la tabla turno, si el cambio fue de estado disponible a reservado, envía un mail confirmando la reserva. Si fue un cambio de estado de reservado a cancelado, se envía un mail confirmando la cancelación. 
 Por otro lado, crea la function envio_mail_diario() que retorna void, y se encarga de mandar mails recordatorios a los turnos que están a 2 días de distancia y a los que se olvidaron del turno.
-[source, c]
+
+[source, sql]
 ----
 create or replace function envio_mail_update() returns trigger as $$
 declare

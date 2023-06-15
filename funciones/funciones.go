@@ -98,6 +98,33 @@ func GenerarTurnosDisponibles_Mes(anio, mes int){
 	fmt.Printf("Creacion turnos %d-%d\n",anio,mes)
 }
 
+func AtenderTurnos_Dia(){ 
+	db := conexionBase()
+	defer db.Close()
+	//_var err error
+	rows, err := db.Query(`select * from turno where estado='reservado'`) 
+	if err != nil {
+		log.Fatal(err)
+		fmt.Println("Error")
+	}
+	defer rows.Close()
+	
+	var t turno 
+	
+	for rows.Next(){
+		if err := rows.Scan(&t.nro_turno, &t.fecha,&t.nro_consultorio,&t.dni_medique,&t.nro_paciente,&t.nro_obra_social_consulta,&t.nro_afiliade_consulta,&t.monto_paciente,&t.monto_obra_social,&t.f_reserva,&t.estado); 
+		err != nil {
+			log.Fatal(err)
+		}
+		_, err = db.Query(`select atencion_de_turno($1);`,t.nro_turno) 
+	}
+	if err = rows.Err(); 
+	err != nil {
+		log.Fatal(err)
+	}
+	
+	fmt.Printf("Atencion de turnos del dìa \n")
+}
 
 func Liquidar_obra_social (anio, mes, nro_OS int) {
 	db:= conexionBase()
@@ -349,4 +376,18 @@ func ReadUnique(db *bolt.DB, bucketName string, key []byte) ([]byte, error) {
 		return nil
 	})
 	return buf, err
+}
+
+type turno struct{
+	nro_turno int
+	fecha string  
+	nro_consultorio int
+	dni_medique int
+	nro_paciente int
+	nro_obra_social_consulta sql.NullInt64
+	nro_afiliade_consulta sql.NullInt64
+	monto_paciente float64 
+	monto_obra_social float64
+	f_reserva string
+	estado string 
 }

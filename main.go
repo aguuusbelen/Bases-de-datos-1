@@ -53,15 +53,17 @@ func ejecutarOpcion(selec string){
 				fmt.Printf("Enviando mails diarios \n")
 				f.EnvioMailsDiarios()
 			case "9":
+				fmt.Printf("Atendiendo turnos del dia\n")
+				f.AtenderTurnos_Dia()
+			case "10":
 				fmt.Printf("Eliminando keys\n")
 				f.BorrarKeys()
 				break
-			case "10":
+			case "11":
 				fmt.Printf("Creando Bolt DB\n")
 				f.CrearBoltDB()
-				//f.AtenderTurnos_Dia()
 				break
-			case "11":
+			case "12":
 				fmt.Printf("Eliminando base de datos\n")
 				f.BorrarBase()
 				break
@@ -87,9 +89,10 @@ func mostrarOpciones() {
 	fmt.Print("6. Generar turnos disponibles.\n")
 	fmt.Print("7. Testear la base usando la tabla solicitud_reservas.\n")
 	fmt.Print("8. Enviar mails diarios.\n")
-	fmt.Print("9. Borrar keys (primary y foreign).\n")
-	fmt.Print("10. Cargar base Bolt.dbq\n")
-	fmt.Print("11. Borrar base de datos. \n")
+	fmt.Print("9. Atender turnos del dia.\n")
+	fmt.Print("10. Borrar keys (primary y foreign).\n")
+	fmt.Print("11. Cargar base Bolt.dbq\n")
+	fmt.Print("12. Borrar base de datos. \n")
 	fmt.Print("q. Salir. \n\n")
 
 	fmt.Print("Elija una opcion: \n")

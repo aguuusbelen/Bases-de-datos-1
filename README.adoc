@@ -154,7 +154,7 @@ $$ language plpgsql;
 * _reservar_turno.sql_: crea la función Reservar_turno(int,int,timestamp) que recibe como parámetro el número de paciente, DNI del medique, fecha y hora del turno a reservar.
 Devuelve un booleano indicando si se pudo realizar la reserva, en caso de que se concrete la reserva el turno se indica en la tabla turno como reservado y se envía un email al paciente. 
 
-[source, c]
+[source, sql]
 ----
 	create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 	declare
@@ -196,7 +196,7 @@ Devuelve un booleano indicando si se pudo realizar la reserva, en caso de que se
 * _atención_de_turno.sql_: crea la función Atencion_de_turno(int) que recibe como parámetro el número del turno que se desea atender y retorna un booleano indicando si se pudo realizar elprocedimiento.
 Esta función marca como atendido el turno indicado si coincide con lafecha actual, en caso contrario se cargan los errores en la tabla error.
 	
-[source, c]
+[source, sql]
 ----
 	create or replace function Atencion_de_turno(turno_nro int) returns boolean as $$
 	declare
@@ -235,7 +235,7 @@ Esta función marca como atendido el turno indicado si coincide con lafecha actu
  * _liquidacion_para_obras_sociales.sql_ : crea la función liquidacion_para_obras_sociales(int, int, int) que recibe como parámetrosel mes, anio y el número de la obra social de la liquidación a realiar.
   Retorna el monto tortal a liquidar. Se generá la liquidación una vez por mes, en caso de no haber liquidado aquellos turnos que figuren como atendidos se liquidaron, además se cargan los datos correspondientes a la liquidacion total en la tabla liquidacion_cabecera y el datalle de cada atención a liquidar de cada turno en la tabla liquidacion_detalle.
 	
-[source, c]
+[source, sql]
 ----	
 	create or replace function Liquidacion_para_obras_sociales(anio int, mes int, numero_obra_social int) returns decimal as $$
 	declare
@@ -367,7 +367,7 @@ Carpeta: funciones ::
 En esta carpeta se encuentra el codigo en go para implementar los stored procedures y triggers de sql
 * *funciones.go*: Contiene los comandos para ejecutar los archivos de sql. Algunas de las funciones más importantes son:
 		
-[source, c]
+[source, go]
 ----
 		func CrearBase() {
 			db, err := sql.Open("postgres", "user=postgres host=localhost dbname=postgres sslmode=disable")
@@ -455,7 +455,7 @@ En esta carpeta se encuentra el codigo en go para implementar los stored procedu
 ----
 
 * *CrearBoltDB.go*: Contiene la logica para codificar lo realizado en Go a JSON
-[source, c]
+[source, go]
 ----		
 	type Consultorio struct{
 		Nro_consultorio int `json:"nro_consultorio"`
@@ -489,7 +489,7 @@ En esta carpeta se encuentra el codigo en go para implementar los stored procedu
 		
 La función CrearBoltDB() crea una base de datos NoSQL en Bolt.db basada en JSON.
 	 
-[source, c]
+[source, go]
 ----
 	func CrearBoltDB() {
 		// Abrimos la BoltDB
@@ -605,7 +605,7 @@ La función CrearBoltDB() crea una base de datos NoSQL en Bolt.db basada en JSON
 	
 Además, al ejecutar , se carga un menú con diferentes opciones.
 	
-[source, c]
+[source, go]
 ----	
 	func ejecutarOpcion(selec string){    
 		for selec !="q"{

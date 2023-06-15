@@ -101,8 +101,9 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
  * _cancelar_turnos_.sql : crea la funcion Cancelar_turnos(int,date,date) que recibe el dni del medique y dos fechas para marcar un rango de fechas, y cancela todos los turnos que tiene ese médique en ese rango de fechas. Devuelve la cantidad de turnos cancelados.
  * _test_reservas_.sql : introduce en la tabla solicitud_reservas unas reservas que seleccionamos nosotros en forma de prueba, y las reserva con la function reservar_turno().
  * _generacion_de_turnos_disponibles.sql_: crea la función Generar_turnos_disponibles(int,int) que recibe el año y mes de los turnos que se quieren generar y retorna un booleano indicando si fue posible la operación. Esta función genera todos los turnos de les mediques para el mes indicado, según la agenda de turnos ya indicada. 
-	[source, c]
-	----create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
+	
+[source, c]
+----create or replace function Generar_turnos_disponibles(anio int, mes int) returns boolean as $$
 declare
 	turnos_en_fecha record;
 	nro_turno int;
@@ -190,7 +191,7 @@ $$ language plpgsql;
 		return true;
 	end;
 	$$ language plpgsql;
-	----
+----
  
  * _atención_de_turno.sql_: crea la función Atencion_de_turno(int) que recibe como parámetro el número del turno que se desea atender y retorna un booleano indicando si se pudo realizar elprocedimiento.
   Esta función marca como atendido el turno indicado si coincide con lafecha actual, en caso contrario se cargan los errores en la tabla error.

@@ -32,7 +32,7 @@ Durante el desarrollo del trabajo, nos fuimos encontrando con distintas dificult
 * Para comenzar, iniciamos la creación de tablas, la logica para agregar y borrar PKs y FKs e la insercion de datos en las tablas en un mismo archivo sql. Esto dificulto el trabajo en equipo, por lo cual decidimos separar las acciones en diferentes archivos. Este cambio, nos permitió trabajar de manera mas ordenada en Go.
 * Tuvimos que investigar el uso de timestamp para poder obtener solo los datos necesarios. 
 
-* *Generar los turnos disponibles*: Luego de realizar una primer generación de turnos, los turnos siguientes se intentaban insertar nuevamente desde el inicio con nro_turno = 1. Primeramente lo solucionamos agregando logica para verificar cual era la ultima fila de la tabla y a partir de alli insertar los nuevos numeros de turno. 
+* *Generar los turnos disponibles*: Luego de realizar una primer generación de turnos, los turnos siguientes se intentaban insertar nuevamente desde el inicio con nro_turno=1. Primeramente lo solucionamos agregando logica para verificar cual era la ultima fila de la tabla y a partir de alli insertar los nuevos numeros de turno. 
 
 [source, c]
 ----	
@@ -42,15 +42,15 @@ Durante el desarrollo del trabajo, nos fuimos encontrando con distintas dificult
 	else
 		nro_turno:=1;
 	end if;
-.
-.
-.
+
 ----
 	
 Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo que decidimos usar serial para el número de turno.
 
-* //Falta explicar algun problema con los mails? o con liquidaciones?
+//Falta explicar algun problema con los mails? o con liquidaciones?
 * *Transacciones*: Para evitar que se asigne el mismo turno a dos pacientes diferentes, es necesario el uso de transacciones. Esto nos generó un problema donde no pudimos encontrar solución 
+
+.Error en transacciones
 image::errorTransacciones.jpg[]
 
 Se agregaron instancias de datos que permitan testear el sistema. 
@@ -58,13 +58,14 @@ La base de datos se implementa sobre la postgresSQL.
 //NO ME CONVENCE REDACCION 
 //La carga de datos y el desarrollo del sistema (parte lógica) se realizan en el leguaje de programación SQL. 
 //Con lo cual se desarrollo, utilizando el lenguaje de programación GO, un menú con las opciones de las funciones a ejecutar por el sistema.  
-También, se puede incluir una descripción general del programa—cómo
+
+//También, se puede incluir una descripción general del programa—cómo
 funciona.
 
-En esta sección pueden incluirse las dificultades que tuvieron, las
-soluciones encontradas, las decisiones que se fueron tomando a lo largo
-del trabajo práctico, y las cuestiones de diseño que consideren
-importantes.
+//En esta sección pueden incluirse las dificultades que tuvieron, las
+//soluciones encontradas, las decisiones que se fueron tomando a lo largo
+//del trabajo práctico, y las cuestiones de diseño que consideren
+//importantes.
 
 
 == Implementación
@@ -89,13 +90,10 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 		nro_turno int;
 		aux_horario time;
 		a agenda%rowtype;
-		
 		fecha_aux_inicio timestamp := date_trunc('month', make_date(anio,mes,1));
 		fecha_aux_final timestamp := fecha_aux_inicio + interval '1 month' - interval '1 day';
 		fecha_aux_actual timestamp;
-		
 		cant_de_turnos_cargados int;
-		
 	begin 
 		--Si hay turnos creados para ese año y mes, devuelve false.
 		if exists (
@@ -103,50 +101,37 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 			((select extract (year from turno.fecha))= anio and (select extract (month from turno.fecha)) = mes)
 		) then return false;
 		end if;
-		
 		for a in select * from agenda loop 
-			
 			fecha_aux_actual:= fecha_aux_inicio;
-			
 			while fecha_aux_actual <= fecha_aux_final loop
-				
 				if (select extract (isodow from fecha_aux_actual)) = a.dia then
 					aux_horario:= a.hora_desde;
 					while aux_horario <= a.hora_hasta - a.duracion_turno loop
-				
 							insert into turno (fecha, nro_consultorio, dni_medique,nro_paciente,nro_obra_social_consulta,nro_afiliade_consulta,monto_paciente,monto_obra_social,f_reserva,estado) 
 												values(fecha_aux_actual + aux_horario, a.nro_consultorio, a.dni_medique, null, null, null, null, null, null, 'disponible');
 							nro_turno:= nro_turno +1; 
 							aux_horario := aux_horario + a.duracion_turno;
-					
 					end loop;
 				end if;
 				fecha_aux_actual=fecha_aux_actual + interval '1 day';
-				
 			end loop;
-			
 		end loop;
 		return true;
-		
 	end;
 	$$ language plpgsql;
-	.
-	.
-	.
 	----
  
  * atención_de_turno.sql: crea la función Atencion_de_turno(int) que recibe como parámetro el número del turno que se desea atender y retorna un booleano indicando si se pudo realizar elprocedimiento.
   Esta función marca como atendido el turno indicado si coincide con lafecha actual, en caso contrario se cargan los errores en la tabla error.
+	
 	[source, c]
 	----	
 	create or replace function Atencion_de_turno(turno_nro int) returns boolean as $$
 	declare
 		t turno%rowtype;
 		fecha_actual timestamp := current_date + current_time ;
-		
 	begin
 		select * from turno into t where turno_nro = turno.nro_turno;
-		
 			if not found then
 				insert into error (f_turno, nro_consultorio, dni_medique, nro_paciente, operacion, f_error, motivo) 
 									values (t.fecha, t.nro_consultorio, t.dni_medique, t.nro_paciente, 'atención', fecha_actual, 'número de turno no válido');
@@ -170,22 +155,17 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 					end if;
 				end if;
 			end if;
-			
-		
 	end;
 	$$ language plpgsql;
-	.
-	.
-	.
 	----
 
  * liquidacion_para_obras_sociales.sql: crea la función liquidacion_para_obras_sociales(int, int, int) que recibe como parámetrosel mes, anio y el número de la obra social de la liquidación a realiar.
   Retorna el monto tortal a liquidar. Se generá la liquidación una vez por mes, en caso de no haber liquidado aquellos turnos que figuren como atendidos se liquidaron, además se cargan los datos correspondientes a la liquidacion total en la tabla liquidacion_cabecera y el datalle de cada atención a liquidar de cada turno en la tabla liquidacion_detalle.
+	
 	[source, c]
 	----	
 	create or replace function Liquidacion_para_obras_sociales(anio int, mes int, numero_obra_social int) returns decimal as $$
 	declare
-
 		t_aux turno%rowtype;
 		medique_aux medique%rowtype;
 		paciente_aux paciente%rowtype;
@@ -193,7 +173,6 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 		fecha_aux_final date := fecha_aux_inicio + interval '1 month' - interval '1 day';
 		monto_liquidacion decimal(15,2);
 		nro_liquidacion_aux int;
-		
 	begin
 		-- si ya esta liquidado
 		if exists (
@@ -202,66 +181,49 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 				and turno.nro_obra_social_consulta=numero_obra_social and turno.estado='liquidado')
 			) then return 0;
 		end if;
-		
 		-- en caso que no este liquidado
 		insert into liquidacion_cabecera (nro_obra_social, desde, hasta, total) values
-				(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion); --se crea la liquidacion 
-				
+				(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion); --se crea la liquidacion 	
 		nro_liquidacion_aux = (SELECT MAX(nro_liquidacion) from liquidacion_cabecera) :: int;
-		
-		monto_liquidacion = 0;	
-			
-		for t_aux in select * from turno where turno.nro_obra_social_consulta = numero_obra_social and turno.estado='atendido' loop
-															
+		monto_liquidacion = 0;		
+		for t_aux in select * from turno where turno.nro_obra_social_consulta = numero_obra_social and turno.estado='atendido' loop												
 			if (t_aux.fecha ::date >= fecha_aux_inicio  and t_aux.fecha ::date <= fecha_aux_final) then
-				
 				select * into medique_aux from medique where t_aux.dni_medique=medique.dni_medique;
-
 				select * into paciente_aux from paciente where t_aux.nro_paciente=paciente.nro_paciente;
-				
 				update turno set estado='liquidado' where turno.nro_turno=t_aux.nro_turno;
-				
 				insert into liquidacion_detalle (nro_liquidacion,f_atencion,nro_afiliade, dni_paciente, nombre_paciente, 
 					apellido_paciente, dni_medique,nombre_medique, apellido_medique,especialidad, monto)
 					values(nro_liquidacion_aux,t_aux.fecha :: date, t_aux.nro_afiliade_consulta, paciente_aux.dni_paciente, paciente_aux.nombre, 
 					paciente_aux.apellido,t_aux.dni_medique, medique_aux.nombre, medique_aux.apellido,medique_aux.especialidad, 
-					t_aux.monto_obra_social);
-					
+					t_aux.monto_obra_social);	
 				monto_liquidacion = monto_liquidacion + t_aux.monto_obra_social; 
-				
 			end if;	
-		
 		end loop;
-		
-		update liquidacion_cabecera set total=monto_liquidacion where liquidacion_cabecera.nro_liquidacion=nro_liquidacion_aux;
-						
+		update liquidacion_cabecera set total=monto_liquidacion where liquidacion_cabecera.nro_liquidacion=nro_liquidacion_aux;			
 		alter sequence liquidacion_detalle_nro_linea_seq restart with 1;  --se reestablece el serial de nro_linea 
-		
 		return monto_liquidacion;
-		
 	end;
 	$$ language plpgsql;
-	.
-	.
-	.
 	----
 
-En esta sección se incluye el código fuente correctamente formateado—y
-comentado, si corresponde.
+//En esta sección se incluye el código fuente correctamente formateado—y
+//comentado, si corresponde.
 
-Además, por cada fragmento de código
-relevante—i.e. función, método, procedimiento—se debe dar una
-breve descripción, decir qué hace, y especificar los parámetros que
-toma la función/método/procedimiento, junto con los valores que devuelve
-ó modifica.
+//Además, por cada fragmento de código
+//relevante—i.e. función, método, procedimiento—se debe dar una
+//breve descripción, decir qué hace, y especificar los parámetros que
+//toma la función/método/procedimiento, junto con los valores que devuelve
+//ó modifica.
 
-_No debería incluirse el código de librerías/frameworks que se
-utilicen—a no ser que sea absolutamente necesario._
+//_No debería incluirse el código de librerías/frameworks que se
+//utilicen—a no ser que sea absolutamente necesario._
 
 == Conclusiones
 
-El presente trabajo presentó un gran desafío para todos. Pudimos mejorar y desarrollar habilidades sobre el manejo de base de datos y los diferentes lenguajes de programacion utlizados.
+El presente trabajo presentó un gran desafío para todos. Pudimos mejorar y desarrollar habilidades sobre el manejo de base de datos y los diferentes lenguajes de programación utilizados. 
+Los problemas surgidos, nos obligaron a probar varias soluciones hasta llegar al resultado correcto por lo cual aprendimos distintas formas de solucionar problemas en el futuro.
 
+//En cuanto a las diferencias entre las bases de datos relacional sql y la no relacional boltDB, podemos decir que se nos dificultó mucho menos el uso de sql.
 Problemas::
  * Utilización de diferentes tipos de datos en los distintos lenguajes. 
  * Utilización de PERFORM en lugar de SELECT. 

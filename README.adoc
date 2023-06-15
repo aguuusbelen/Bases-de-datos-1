@@ -457,34 +457,34 @@ En esta carpeta se encuentra el codigo en go para implementar los stored procedu
 * *CrearBoltDB.go*: Contiene la logica para codificar lo realizado en Go a JSON
 [source, go]
 ----		
-	type Consultorio struct{
-		Nro_consultorio int `json:"nro_consultorio"`
-		Nombre string `json:"nombre"`
-		Domicilio string `json:"domicilio"`
-		Codigo_postal string `json:"codigo_postal"`
-		Telefono string `json:telefono"`
-	}
-	type Obra_social struct{
-		Nro_obra_social int `json:"nro_obra_social"`
-		Nombre string `json:"nombre"`
-		Contacto_nombre string `json:"contacto_nombre"`
-		Contacto_apellido string `json:"contacto_apellido"`
-		Contacto_telefono string `json:"contacto_telefono"`
-		Contacto_email string `json:"contacto_email"`
-	}
-	type Turno struct{
-		Nro_turno int `json:"nro_turno"`
-		Fecha string `json:"fecha"`
-		Nro_consultorio int `json:"nro_consultorio"`
-		Dni_medique int `json:"dni_medique"`
-		Nro_paciente int `json:"nro_paciente"`
-		Nro_obra_social_consulta any `json:"nro_obra_social_consulta, omitempty"`
-		Nro_afiliade_consulta any `json:"nro_afiliade_consulta, omitempty"`
-		Monto_paciente float64 `json:"monto_paciente"`
-		Monto_obra_social any `json:"monto_obra_social,omitempty"`
-		F_reserva string `json:"f_reserva"`
-		Estado string `json:"estado"`
-	}
+type Consultorio struct{
+	Nro_consultorio int `json:"nro_consultorio"`
+	Nombre string `json:"nombre"`
+	Domicilio string `json:"domicilio"`
+	Codigo_postal string `json:"codigo_postal"`
+	Telefono string `json:telefono"`
+}
+type Obra_social struct{
+	Nro_obra_social int `json:"nro_obra_social"`
+	Nombre string `json:"nombre"`
+	Contacto_nombre string `json:"contacto_nombre"`
+	Contacto_apellido string `json:"contacto_apellido"`
+	Contacto_telefono string `json:"contacto_telefono"`
+	Contacto_email string `json:"contacto_email"`
+}
+type Turno struct{
+	Nro_turno int `json:"nro_turno"`
+	Fecha string `json:"fecha"`
+	Nro_consultorio int `json:"nro_consultorio"`
+	Dni_medique int `json:"dni_medique"`
+	Nro_paciente int `json:"nro_paciente"`
+	Nro_obra_social_consulta any `json:"nro_obra_social_consulta, omitempty"`
+	Nro_afiliade_consulta any `json:"nro_afiliade_consulta, omitempty"`
+	Monto_paciente float64 `json:"monto_paciente"`
+	Monto_obra_social any `json:"monto_obra_social,omitempty"`
+	F_reserva string `json:"f_reserva"`
+	Estado string `json:"estado"`
+}
 ----
 		
 La función CrearBoltDB() crea una base de datos NoSQL en Bolt.db basada en JSON.

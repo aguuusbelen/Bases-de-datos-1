@@ -20,40 +20,63 @@ Hernan Rondelli y Daniel Bertaccini
 El siguiente trabajo consiste en un sistema para almacenar información relativa a la administración de turnos médicos.
 
 El sistema permitirá asignar turnos, mantener toda la información de los pacientes, mediques, cobertura de las obras sociales, controlar que los turnos se asignen correctamente y administrar las liquidaciones
-mensuales de las atenciones realizadas por cada medique.
+mensuales de las atenciones realizadas por cada obra social.
 
-// Para esto se creó una base de datos utilizando postgres y go //
+Para esto se crea una base de datos utilizando postgresSQL, y también se implementa una base de datos BoltDB basada en JSON.
+
 
 == Descripción
 
-Para comenzar, se agregaron las tablas:
+Para comenzar, se agregaron las siguientes tablas:
 
 * Paciente
 * Medique
 * Consultorio
 * Obra social
-
-Estas cuatro tablas guardaran informaciòn basica.
+Estas primeras cuatro tablas guardarán informaciòn básica.
 
 * Agenda: Relacionada a cada medique para obtener la informaciòn de los dìas y horarios en que atiende.
 * Turno: Guardara los datos de los turnos, relacionando la informaciòn de mediques, pacientes y consultorios.
-* Reprogramaciòn: 
-* Error:
+* Reprogramaciòn: Guardará los turnos que fueron reprogramados, con los respectivos datos. 
+* Error: Guardará los turnos en los cuales se haya generado errores, ya sea por reserva, atención, cancelación. 
 * Cobertura: Guardarà las obras sociales que atiende cada medique.
 * Liquidaciòn cabecera: Guardarà las liquidaciones realizadas por obra social, indicando el periodo de liquidación, y el monto a liquidar.  
 * Liquidacion detalle: Guardarà la descripción de todas las atenciones de les pacientes realizadas por cada liquidación.
-* Envio email:
+* Envio email: Guardará los datos de los emails que se envían a cada paciente por reserva, atención, ausencia, o recordatorio de turnos.  
 
+Se agregaron instancias de datos que permitan testear el sistema. 
+La base de datos se implementa sobre la postgresSQL.
+//NO ME CONVENCE REDACCION 
+//La carga de datos y el desarrollo del sistema (parte lógica) se realizan en el leguaje de programación SQL. 
+//Con lo cual se desarrollo, utilizando el lenguaje de programación GO, un menú con las opciones de las funciones a ejecutar por el sistema.  
+También, se puede incluir una descripción general del programa—cómo
+funciona.
 
 En esta sección pueden incluirse las dificultades que tuvieron, las
 soluciones encontradas, las decisiones que se fueron tomando a lo largo
 del trabajo práctico, y las cuestiones de diseño que consideren
 importantes.
 
-También, se puede incluir una descripción general del programa—cómo
-funciona.
 
 == Implementación
+
+Carpeta: funciones ::
+//FALTAN AGREGAR LO D ELOS TRIGGERS, ERRORES Y DEMÁS ARCHIVOS
+En esta carpeta se encuentran todos los stored procedures y triggers desarrollados en lenguaje SQL. 
+ * add_PKs_FKs.sql: agrega todas las Primary keys y Foreign Keys de todas las tablas, según las condiciones y relaciones que se deben cumplir entre los datos.
+ * borrar_PK_FK.sql: elimina todas las Primary keys y Foreign Keys de las tablas. 
+ * creación_de_tablas.sql: crea todas las tablas que se utilizan en el sistema. 
+ * carga_valores.sql: introduce todos los datos en las diferentes tablas utilizados para este trabajo.
+ * generacion_de_turnos_disponibles.sql: crea la función Generar_turnos_disponibles(int,int) que recibe el año y mes de los turnos que se quieren generar y retorna un booleano indicando si fue posible la operación.
+  Esta función genera todos los turnos de les mediques para el mes indicado, según la agenda de turnos ya indicada. 
+ * reservar_turno.sql: crea la función Reservar_turno(int,int,timestamp) que recibe como parámetro el número de paciente, DNI del medique, fecha y hora del turno a resrevar.
+  Devuelve un booleano indicando si se pudo realizar la reserva, en caso de que se concrete la reserva el turno se indica en la tabla turno como reservado y se envía un email al paciente. 
+ * atención_de_turno.sql: crea la función Atencion_de_turno(int) que recibe como parámetro el número del turno que se desea atender y retorna un booleano indicando si se pudo realizar elprocedimiento.
+  Esta función marca como atendido el turno indicado si coincide con lafecha actual, en caso contrario se cargan los errores en la tabla error.
+ * liquidacion_para_obras_sociales.sql: crea la función liquidacion_para_obras_sociales(int, int, int) que recibe como parámetrosel mes, anio y el número de la obra social de la liquidación a realiar.
+  Retorna el monto tortal a liquidar. Se generá la liquidación una vez por mes, en caso de no haber liquidado aquellos turnos que figuren como atendidos se liquidaron, además se cargan los datos correspondientes a la liquidacion total en la tabla liquidacion_cabecera y el datalle de cada atención a liquidar de cada turno en la tabla liquidacion_detalle.
+
+
 
 En esta sección se incluye el código fuente correctamente formateado—y
 comentado, si corresponde.
@@ -68,6 +91,15 @@ _No debería incluirse el código de librerías/frameworks que se
 utilicen—a no ser que sea absolutamente necesario._
 
 == Conclusiones
+
+El presente trabajo presentó un gran desafío para todos. Pudimos mejorar y desarrollar habilidades sobre el manejo de base de datos y los diferentes lenguajes de programacion utlizados.
+
+Problemas::
+ * Utilización de diferentes tipos de datos en los distintos lenguajes. 
+ * Utilización de PERFORM en lugar de SELECT. 
+ * Orden del código y ejecución de las diferentes sentencias. 
+ * 
+ * Transactions 
 
 Aquí van algunas reflexiones acerca del proceso de desarrollo del
 trabajo realizado, y de los resultados obtenidos.

@@ -33,6 +33,7 @@ Para comenzar, se agregaron las siguientes tablas:
 * Medique
 * Consultorio
 * Obra social
+
 Estas primeras cuatro tablas guardarán informaciòn básica.
 
 * Agenda: Relacionada a cada medique para obtener la informaciòn de los dìas y horarios en que atiende.

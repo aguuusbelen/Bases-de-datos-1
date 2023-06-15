@@ -1,5 +1,5 @@
 create table paciente(
-nro_paciente int, --número de historia clínica
+nro_paciente int, 
 nombre text,
 apellido text,
 dni_paciente int,
@@ -8,7 +8,7 @@ nro_obra_social int,
 nro_afiliade int,
 domicilio text,
 telefono char(12),
-email text -- válido
+email text 
 );
 
 create table medique(
@@ -16,7 +16,7 @@ dni_medique int,
 nombre text,
 apellido text,
 especialidad varchar(64),
-monto_consulta_privada decimal(12,2), --para pacientes sin obra social
+monto_consulta_privada decimal(12,2), 
 telefono char(12)
 );
 
@@ -30,9 +30,9 @@ telefono char(12)
 
 create table agenda(
 dni_medique int,
-dia int, --1:lunes, 2:martes...
+dia int, 
 nro_consultorio int,
-hora_desde time, --08:45, 11:30...
+hora_desde time, 
 hora_hasta time,
 duracion_turno interval
 );
@@ -43,10 +43,10 @@ fecha timestamp,
 nro_consultorio int,
 dni_medique int,
 nro_paciente int,
-nro_obra_social_consulta int, --para las liquidaciones
+nro_obra_social_consulta int, 
 nro_afiliade_consulta int,
 monto_paciente decimal(12,2),
-monto_obra_social decimal(12,2), --para las liquidaciones
+monto_obra_social decimal(12,2), 
 f_reserva timestamp,
 estado char(10) --`disponible',`reservado',`cancelado',`atendido',`liquidado'
 );
@@ -76,8 +76,8 @@ motivo varchar(64)
 create table cobertura(
 dni_medique int,
 nro_obra_social int,
-monto_paciente decimal(12,2), --monto a abonar por el paciente
-monto_obra_social decimal(12,2) --monto a liquidar a la obra social
+monto_paciente decimal(12,2), 
+monto_obra_social decimal(12,2) 
 );
 
 create table obra_social (

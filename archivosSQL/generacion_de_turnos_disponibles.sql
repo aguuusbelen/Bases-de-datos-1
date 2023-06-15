@@ -15,11 +15,11 @@ begin
 	--Si hay turnos creados para ese año y mes, devuelve false.
 	if exists (
 		select * from turno where 
-		((select extract (year from turno.fecha))= anio and (select extract (month from turno.fecha)) = mes) -- Comparo el año y el mes con la fecha del turno
+		((select extract (year from turno.fecha))= anio and (select extract (month from turno.fecha)) = mes)
 	) then return false;
 	end if;
 	
-	for a in select * from agenda loop -- para recorrer la tabla agenda
+	for a in select * from agenda loop 
 		
 		fecha_aux_actual:= fecha_aux_inicio;
 		

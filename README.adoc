@@ -319,11 +319,11 @@ Carpeta: funciones ::
 			F_reserva string `json:"f_reserva"`
 			Estado string `json:"estado"`
 		}
+	----
 		
 	La función CrearBoltDB() crea una base de datos NoSQL en Bolt.db basada en JSON.
 	 
 		func CrearBoltDB() {
-
 			// Abrimos la BoltDB
 			dbbolt, err := bolt.Open("bolt.db", 0600, nil)
 			if err != nil {
@@ -413,8 +413,10 @@ Carpeta: funciones ::
 				resultado4, err := ReadUnique(dbbolt, "obras_sociales", []byte(strconv.Itoa(os.Nro_obra_social)))
 				fmt.Printf("%s\n", resultado4)
 			}
+	----
 	
 	Además, al ejecutar , se carga un menú con diferentes opciones.
+	
 	
 	func ejecutarOpcion(selec string){    
 		for selec !="q"{

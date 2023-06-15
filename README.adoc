@@ -284,7 +284,7 @@ Esta función marca como atendido el turno indicado si coincide con lafecha actu
 Por otro lado, crea la function envio_mail_diario() que retorna void, y se encarga de mandar mails recordatorios a los turnos que están a 2 días de distancia y a los que se olvidaron del turno.
 [source, c]
 ----
-		create or replace function envio_mail_update() returns trigger as $$
+create or replace function envio_mail_update() returns trigger as $$
 declare
 	body text; 
 	subject text;

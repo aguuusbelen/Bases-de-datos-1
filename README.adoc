@@ -69,7 +69,7 @@ La base de datos se implementa sobre la postgresSQL.
 
 == Implementación
 
-Carpeta: funciones ::
+Carpeta: archivosSQL ::
 //FALTAN AGREGAR LO D ELOS TRIGGERS, ERRORES Y DEMÁS ARCHIVOS
 En esta carpeta se encuentran todos los stored procedures y triggers desarrollados en lenguaje SQL. 
  * creación_de_tablas.sql: crea todas las tablas que se utilizan en el sistema.
@@ -179,28 +179,300 @@ En esta carpeta se encuentran todos los stored procedures y triggers desarrollad
 		end if;
 		-- en caso que no este liquidado
 		insert into liquidacion_cabecera (nro_obra_social, desde, hasta, total) values
-				(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion); --se crea la liquidacion 	
+				(numero_obra_social, fecha_aux_inicio, fecha_aux_final, monto_liquidacion); 	
 				nro_liquidacion_aux = (SELECT MAX(nro_liquidacion) from liquidacion_cabecera) :: int;
 				monto_liquidacion = 0;		
-		for t_aux in select * from turno where turno.nro_obra_social_consulta = numero_obra_social and turno.estado='atendido' loop												
-			if (t_aux.fecha ::date >= fecha_aux_inicio  and t_aux.fecha ::date <= fecha_aux_final) then
-				select * into medique_aux from medique where t_aux.dni_medique=medique.dni_medique;
-				select * into paciente_aux from paciente where t_aux.nro_paciente=paciente.nro_paciente;
-				update turno set estado='liquidado' where turno.nro_turno=t_aux.nro_turno;
-				insert into liquidacion_detalle (nro_liquidacion,f_atencion,nro_afiliade, dni_paciente, nombre_paciente, 
-					apellido_paciente, dni_medique,nombre_medique, apellido_medique,especialidad, monto)
-					values(nro_liquidacion_aux,t_aux.fecha :: date, t_aux.nro_afiliade_consulta, paciente_aux.dni_paciente, paciente_aux.nombre, 
-					paciente_aux.apellido,t_aux.dni_medique, medique_aux.nombre, medique_aux.apellido,medique_aux.especialidad, 
-					t_aux.monto_obra_social);	
-				monto_liquidacion = monto_liquidacion + t_aux.monto_obra_social; 
-			end if;	
-		end loop;
+			for t_aux in select * from turno where turno.nro_obra_social_consulta = numero_obra_social and turno.estado='atendido' loop												
+				if (t_aux.fecha ::date >= fecha_aux_inicio  and t_aux.fecha ::date <= fecha_aux_final) then
+					select * into medique_aux from medique where t_aux.dni_medique=medique.dni_medique;
+					select * into paciente_aux from paciente where t_aux.nro_paciente=paciente.nro_paciente;
+					update turno set estado='liquidado' where turno.nro_turno=t_aux.nro_turno;
+					insert into liquidacion_detalle (nro_liquidacion,f_atencion,nro_afiliade, dni_paciente, nombre_paciente, 
+						apellido_paciente, dni_medique,nombre_medique, apellido_medique,especialidad, monto)
+						values(nro_liquidacion_aux,t_aux.fecha :: date, t_aux.nro_afiliade_consulta, paciente_aux.dni_paciente, paciente_aux.nombre, 
+						paciente_aux.apellido,t_aux.dni_medique, medique_aux.nombre, medique_aux.apellido,medique_aux.especialidad, 
+						t_aux.monto_obra_social);	
+					monto_liquidacion = monto_liquidacion + t_aux.monto_obra_social; 
+				end if;	
+			end loop;
 		update liquidacion_cabecera set total=monto_liquidacion where liquidacion_cabecera.nro_liquidacion=nro_liquidacion_aux;			
 		alter sequence liquidacion_detalle_nro_linea_seq restart with 1;  --se reestablece el serial de nro_linea 
 		return monto_liquidacion;
 	end;
 	$$ language plpgsql;
 	
+Carpeta: funciones ::
+	En esta carpeta se encuentra el codigo en go para implementar los stored procedures y triggers de sql
+	* *funciones.go*: Contiene los comandos para ejecutar los archivos de sql. Algunas de las funciones más importantes son:
+		
+		func CrearBase() {
+			db, err := sql.Open("postgres", "user=postgres host=localhost dbname=postgres sslmode=disable")
+			if err !=nil {
+				log.Fatal(err)
+				fmt.Println("Error al abrir la base de datos creada")
+			}
+			defer db.Close()
+			_, err = db.Exec(`drop database if exists turnos_medicos;`)
+			if err != nil {
+				log.Fatal(err)
+				fmt.Println("Error al eliminar la base si ya existia")
+			}
+			_, err = db.Exec(`create database turnos_medicos;`)
+			if err != nil {
+				log.Fatal(err)
+				fmt.Println("Error al crear la base prueba")
+			}
+		}	
+		func CargarFunciones() {
+			db:= conexionBase()
+			defer db.Close()
+			ejecutar_sql(db, "archivosSQL/generacion_de_turnos_disponibles.sql")
+			ejecutar_sql(db, "archivosSQL/reservar_turno.sql")
+			ejecutar_sql(db, "archivosSQL/atencion_de_turnos.sql")
+			ejecutar_sql(db, "archivosSQL/cancelar_turnos.sql")
+			ejecutar_sql(db, "archivosSQL/envio_mails.sql")
+			ejecutar_sql(db, "archivosSQL/liquidacion_para_obras_sociales.sql")
+		}
+		func GenerarTurnosDisponibles_Mes(anio, mes int){ 
+			db := conexionBase()
+			var err error
+			_, err = db.Query(`select generar_turnos_disponibles($1,$2);`,anio,mes)  
+			if err != nil {
+				log.Fatal(err)
+				fmt.Println("Error al generar los turnos del mes ")
+			}
+			db.Close()
+		}
+		func AtenderTurnos_Dia(){ 
+			db := conexionBase()
+			defer db.Close()
+			rows, err := db.Query(`select * from turno where estado='reservado'`) 
+			if err != nil {
+				log.Fatal(err)
+				fmt.Println("Error")
+			}
+			defer rows.Close()
+			var t Turno 
+			for rows.Next(){
+				if err := rows.Scan(&t.Nro_turno, &t.Fecha,&t.Nro_consultorio,&t.Dni_medique,&t.Nro_paciente,&t.Nro_obra_social_consulta,&t.Nro_afiliade_consulta,&t.Monto_paciente,&t.Monto_obra_social,&t.F_reserva,&t.Estado); 
+				err != nil {
+					log.Fatal(err)
+				}
+				_, err = db.Query(`select atencion_de_turno($1);`,t.Nro_turno) 
+			}
+			if err = rows.Err(); 
+			err != nil {
+				log.Fatal(err)
+			}
+		}
+		func Liquidar_obra_social (anio, mes, nro_OS int) {
+			db:= conexionBase()
+			defer db.Close()
+			_, err := db.Query(`select liquidacion_para_obras_sociales($1, $2, $3);`,anio,mes,nro_OS)
+			if err != nil {
+				log.Fatal(err)
+				fmt.Println("Error al liquidar obra social")
+			}
+		}
+		func TestearConTabla() {
+			db:= conexionBase()
+			defer db.Close()
+			ejecutar_sql(db, "archivosSQL/test_reservas.sql")
+		}
+		func EnvioMailsDiarios(){
+			db:= conexionBase()
+			defer db.Close()
+			_, err := db.Query(`select envio_mail_diario()`)
+			if err != nil {
+				log.Fatal(err)
+				fmt.Println("Error al enviar mails")
+			}
+		}
+
+	* *CrearBoltDB.go*: Contiene la logica para codificar lo realizado en Go a JSON
+		
+		type Consultorio struct{
+			Nro_consultorio int `json:"nro_consultorio"`
+			Nombre string `json:"nombre"`
+			Domicilio string `json:"domicilio"`
+			Codigo_postal string `json:"codigo_postal"`
+			Telefono string `json:telefono"`
+		}
+		type Obra_social struct{
+			Nro_obra_social int `json:"nro_obra_social"`
+			Nombre string `json:"nombre"`
+			Contacto_nombre string `json:"contacto_nombre"`
+			Contacto_apellido string `json:"contacto_apellido"`
+			Contacto_telefono string `json:"contacto_telefono"`
+			Contacto_email string `json:"contacto_email"`
+		}
+		type Turno struct{
+			Nro_turno int `json:"nro_turno"`
+			Fecha string `json:"fecha"`
+			Nro_consultorio int `json:"nro_consultorio"`
+			Dni_medique int `json:"dni_medique"`
+			Nro_paciente int `json:"nro_paciente"`
+			Nro_obra_social_consulta any `json:"nro_obra_social_consulta, omitempty"`
+			Nro_afiliade_consulta any `json:"nro_afiliade_consulta, omitempty"`
+			Monto_paciente float64 `json:"monto_paciente"`
+			Monto_obra_social any `json:"monto_obra_social,omitempty"`
+			F_reserva string `json:"f_reserva"`
+			Estado string `json:"estado"`
+		}
+		
+	La función CrearBoltDB() crea una base de datos NoSQL en Bolt.db basada en JSON.
+	 
+		func CrearBoltDB() {
+
+			// Abrimos la BoltDB
+			dbbolt, err := bolt.Open("bolt.db", 0600, nil)
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer dbbolt.Close()
+			// Abrimos la bd psql 
+			db:= conexionBase()
+			defer db.Close()
+			// Obtenemos todos los pacientes
+			rows_pacientes, err:= db.Query(`select * from paciente`)
+			if err!=nil{
+				log.Fatal(err)
+			}
+			for rows_pacientes.Next(){
+				var pac Paciente
+				if err:= rows_pacientes.Scan(&pac.Nro_paciente, &pac.Nombre, &pac.Apellido, &pac.Dni_paciente, &pac.F_nac, &pac.Nro_obra_social, &pac.Nro_afiliade, &pac.Domicilio, &pac.Telefono, &pac.Email); err!=nil{
+					log.Fatal(err)
+				}
+				// transformamos al paciente al formato json
+				data_pac, err:=json.MarshalIndent(pac, "", "     ")
+				if err!=nil{
+					log.Fatalf("%s",err)	
+				}
+				// se cargan los pacientes en la BoltDB
+				CreateUpdate(dbbolt, "pacientes", []byte(strconv.Itoa(pac.Nro_paciente)), data_pac)
+				resultado1, err := ReadUnique(dbbolt, "pacientes", []byte(strconv.Itoa(pac.Nro_paciente)))
+				fmt.Printf("%s\n", resultado1)
+			}
+			// Obtenemos todos los mediques
+			rows_mediques, err:= db.Query(`select * from medique`)
+			if err!=nil{
+				log.Fatal(err)
+			}
+			for rows_mediques.Next(){
+				var med Medique
+				if err:= rows_mediques.Scan(&med.Dni_medique, &med.Nombre, &med.Apellido, &med.Especialidad, &med.Monto_consulta_privada, &med.Telefono); err!=nil{
+					log.Fatal(err)
+				}
+				// transformamos al medique al formato json
+				data_med, err:=json.MarshalIndent(med, "", "     ")
+				if err!=nil{
+					log.Fatalf("%s",err)	
+				}
+				// se cargan los mediques en la BoltDB
+				CreateUpdate(dbbolt, "mediques", []byte(strconv.Itoa(med.Dni_medique)), data_med)
+				resultado2, err := ReadUnique(dbbolt, "mediques", []byte(strconv.Itoa(med.Dni_medique)))
+				fmt.Printf("%s\n", resultado2)
+			}
+			// Obtenemos todos los consultorios
+			rows_consultorios, err:= db.Query(`select * from consultorio`)
+			if err!=nil{
+				log.Fatal(err)
+			}
+			for rows_consultorios.Next(){
+				var consul Consultorio
+				if err:= rows_consultorios.Scan(&consul.Nro_consultorio, &consul.Nombre, &consul.Domicilio, &consul.Codigo_postal, &consul.Telefono); err!=nil{
+					log.Fatal(err)
+				}
+				// transformamos al consultorio al formato json
+				data_consul, err:=json.MarshalIndent(consul, "", "     ")
+				if err!=nil{
+					log.Fatalf("%s",err)	
+				}
+				// se cargan los consultorios en la BoltDB
+				CreateUpdate(dbbolt, "consultorios", []byte(strconv.Itoa(consul.Nro_consultorio)), data_consul)
+				resultado3, err := ReadUnique(dbbolt, "consultorios", []byte(strconv.Itoa(consul.Nro_consultorio)))
+				fmt.Printf("%s\n", resultado3)
+			}
+			// Obtenemos todas las obras sociales
+			rows_obras_sociales, err:= db.Query(`select * from obra_social`)
+			if err!=nil{
+				log.Fatal(err)
+			}
+			for rows_obras_sociales.Next(){
+				var os Obra_social
+				if err:= rows_obras_sociales.Scan(&os.Nro_obra_social, &os.Nombre, &os.Contacto_nombre, &os.Contacto_apellido, &os.Contacto_telefono, &os.Contacto_email); err!=nil{
+					log.Fatal(err)
+				}
+				// transformamos al consultorio al formato json
+				data_os, err:=json.MarshalIndent(os, "", "     ")
+				if err!=nil{
+					log.Fatalf("%s",err)	
+				}
+				// se cargan los consultorios en la BoltDB
+				CreateUpdate(dbbolt, "obras_sociales", []byte(strconv.Itoa(os.Nro_obra_social)), data_os)
+				resultado4, err := ReadUnique(dbbolt, "obras_sociales", []byte(strconv.Itoa(os.Nro_obra_social)))
+				fmt.Printf("%s\n", resultado4)
+			}
+	
+	Además, al ejecutar , se carga un menú con diferentes opciones.
+	
+	func ejecutarOpcion(selec string){    
+		for selec !="q"{
+			switch selec{
+				case "1":
+					fmt.Printf("Creando base de datos\n")
+					f.CrearBase()
+					break
+				case "2":
+					fmt.Printf("Creando tablas\n")
+					f.CrearTablas()
+					break
+				case "3":
+					fmt.Printf("Cargando primary keys y foreign keys\n")
+					f.CargarKeys()
+					break
+				case "4":
+					fmt.Printf("Cargando datos\n")
+					f.CargarDatos()
+					break
+				case "5":
+					fmt.Printf("Cargando funciones\n")
+					f.CargarFunciones()
+					break
+				case "6":
+					fmt.Printf("Generando turnos\n")
+					f.GenerarTurnosDisponibles_Mes(2023,6)
+					break
+				case "7":
+					fmt.Printf("Testeando\n")
+					f.TestearConTabla()
+					break
+				case "8":
+					fmt.Printf("Enviando mails diarios \n")
+					f.EnvioMailsDiarios()
+				case "9":
+					fmt.Printf("Atendiendo turnos del dia\n")
+					f.AtenderTurnos_Dia()
+				case "10":
+					fmt.Printf("Eliminando keys\n")
+					f.BorrarKeys()
+					break
+				case "11":
+					fmt.Printf("Creando Bolt DB\n")
+					f.CrearBoltDB()
+					break
+				case "12":
+					fmt.Printf("Eliminando base de datos\n")
+					f.BorrarBase()
+					break
+				default:
+					fmt.Printf("La opción elegida no es válida\n")
+			}
+			fmt.Printf("Elija otra opción\n")
+			fmt.Scanf("%s",&selec)
+		}
+		fmt.Printf("Adios. Gracias por utilizar el sistema!\n")  
+	}
 
 //En esta sección se incluye el código fuente correctamente formateado—y
 //comentado, si corresponde.

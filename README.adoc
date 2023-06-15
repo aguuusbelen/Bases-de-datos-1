@@ -58,7 +58,7 @@ Esta solución puede fallar si se borran filas de la tabla, por ejemplo. Por lo 
 	.Paciente
 	image::datosnull.jpg[]
 	
-	Se solucionó utilizando any para descartar los valores nulos
+Se solucionó utilizando any para descartar los valores nulos
 	
 [source, c]
 ----

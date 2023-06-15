@@ -665,6 +665,7 @@ Además, al ejecutar , se carga un menú con diferentes opciones.
 		fmt.Printf("Adios. Gracias por utilizar el sistema!\n")  
 	}
 ----
+
 //En esta sección se incluye el código fuente correctamente formateado—y
 //comentado, si corresponde.
 
@@ -680,15 +681,19 @@ Además, al ejecutar , se carga un menú con diferentes opciones.
 == Conclusiones
 
 El presente trabajo presentó un gran desafío para todos. Pudimos mejorar y desarrollar habilidades sobre el manejo de base de datos y los diferentes lenguajes de programación utilizados. 
-Los problemas surgidos, nos obligaron a probar varias soluciones hasta llegar al resultado correcto por lo cual aprendimos distintas formas de solucionar problemas en el futuro.
+Por ejemplo, utilizando un lenguaje nuevo como GO nos generó varias dificultades, y ralentizó un poco el avance del trabajo ya que por cada paso teníamos que hacer una serie de investigaciones.
+También, discutimos en grupo algunas cuestiones de diseño, como por ejemplo qué funciones realizar en Go y cuáles en PSQL. Llegamos a la conclusión del menú en Go con que ejecutan comandos PSQL.
 
-//En cuanto a las diferencias entre las bases de datos relacional sql y la no relacional boltDB, podemos decir que se nos dificultó mucho menos el uso de sql.
-Problemas::
- * Utilización de diferentes tipos de datos en los distintos lenguajes. 
- * Utilización de PERFORM en lugar de SELECT. 
- * Orden del código y ejecución de las diferentes sentencias. 
- * 
- * Transactions 
+Los problemas surgidos nos obligaron a probar varias soluciones hasta llegar al resultado correcto por lo cual aprendimos distintas formas de solucionar problemas en el futuro.
+
+En cuanto a las diferencias entre las bases de datos relacional sql y la no relacional boltDB, podemos decir que nos resultó mucho más intuitivo el modelo relacional, y tuvimos bastantes complicaciones con el no relacional.
+
+En términos generales, aprendimos mucho sobre este nuevo trabajo, tanto tecnologías como a trabajar en equipo y a organizarnos entre nosotros. Quedamos satisfechos y contentos con el producto terminado.
+
+//Problemas::
+//* Utilización de PERFORM en lugar de SELECT. 
+// * Orden del código y ejecución de las diferentes sentencias. 
+//* Transactions 
 
 //Aquí van algunas reflexiones acerca del proceso de desarrollo del
 //trabajo realizado, y de los resultados obtenidos.

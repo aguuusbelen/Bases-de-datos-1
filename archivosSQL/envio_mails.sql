@@ -45,7 +45,6 @@ declare
 	
 begin
 	
-	
 	for turno_aux in select * from turno where estado='reservado' and (current_date + interval '2 days')= date_trunc('day',turno.fecha) loop --esta query me da los turnos reservados a 2 días de la fecha actual
 		
 		select * from medique into med_aux where turno_aux.dni_medique = medique.dni_medique;

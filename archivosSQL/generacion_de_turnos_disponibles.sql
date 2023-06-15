@@ -11,9 +11,8 @@ declare
 	
 	cant_de_turnos_cargados int;
 	
-begin	
-	--set transaction isolation level repeatable read;
-	-- Si hay turnos creados para ese año y mes, devuelve false.
+begin 
+	--Si hay turnos creados para ese año y mes, devuelve false.
 	if exists (
 		select * from turno where 
 		((select extract (year from turno.fecha))= anio and (select extract (month from turno.fecha)) = mes) -- Comparo el año y el mes con la fecha del turno

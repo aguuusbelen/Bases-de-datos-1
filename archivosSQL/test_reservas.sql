@@ -1,3 +1,21 @@
+--Stored procedure para reservar los turnos cargados en la tabla solicitud_reservas
+create or replace function test_reservas() returns void as $$
+
+declare
+	
+	res_aux solicitud_reservas%rowtype;
+	tur_aux turno%rowtype;
+	time_aux timestamp;
+	b boolean;
+
+begin 
+	for res_aux in (select * from solicitud_reservas order by nro_orden) loop --se reservan por nro_orden
+		time_aux :=	res_aux.fecha + res_aux.hora;
+		perform reservar_turno(res_aux.nro_paciente, res_aux.dni_medique,time_aux);
+	end loop;
+end;
+$$ language plpgsql;
+
 --Carga de datos de prueba en la tabla solicitud_reservas
 insert into solicitud_reservas values(2, 1, 31759846, '2023-06-15','12:00'); --Mismo turno que el de nro_orden = 1
 insert into solicitud_reservas values(1, 2, 31759846, '2023-06-15','12:00'); --Mismo turno que el de nro_orden = 2
@@ -16,22 +34,7 @@ insert into solicitud_reservas values(14, 8,21036258, '2023-06-16', '12:10'); --
 insert into solicitud_reservas values(15, 8,21036258, '2023-06-16', '18:00'); --Turno invalido: Horario fuera de atencion/limite 
 insert into solicitud_reservas values (15, 2, 30668951, '2023-06-14', '09:00');
 
---Stored procedure para reservar los turnos cargados en la tabla solicitud_reservas
-create or replace function test_reservas() returns void as $$
-declare
-	res_aux solicitud_reservas%rowtype;
-	tur_aux turno%rowtype;
-	time_aux timestamp;
-	b boolean;
 
-begin
-	
-	for res_aux in (select * from solicitud_reservas order by nro_orden) loop --se reservan por nro_orden
-		time_aux :=	res_aux.fecha + res_aux.hora;
-		perform reservar_turno(res_aux.nro_paciente, res_aux.dni_medique,time_aux);
-	end loop;
-end;
-$$ language plpgsql;
 
 --Se ejecuta la funcion
 select test_reservas();

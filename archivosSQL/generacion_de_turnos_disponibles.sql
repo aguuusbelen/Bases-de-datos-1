@@ -31,7 +31,6 @@ begin
 			
 						insert into turno (fecha, nro_consultorio, dni_medique,nro_paciente,nro_obra_social_consulta,nro_afiliade_consulta,monto_paciente,monto_obra_social,f_reserva,estado) 
 											values(fecha_aux_actual + aux_horario, a.nro_consultorio, a.dni_medique, null, null, null, null, null, null, 'disponible');
-						nro_turno:= nro_turno +1; 
 						aux_horario := aux_horario + a.duracion_turno;
 				
 				end loop;
